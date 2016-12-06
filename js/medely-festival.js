@@ -22,198 +22,196 @@ function changeCombo() {
 
 function showInput() {
   errorTicket = false;
-  showLovecaNeeded(user, medelyFestival);
+  showLovecaNeeded();
 }
 
-var medelyFestival = {
-  difficulty: "Expert",
-  numSongsPerLive: 3,
-  timeSpentPerLive: function() {
-    return this.numSongsPerLive * 3;
-  },
-  score: "S",
-  combo: "A",
-  expUp: true,
-  ptUp: true,
-  lpSpentPerLive: function() {
-    switch (this.difficulty) {
-      case "Expert":
-      return 20 * this.numSongsPerLive;
-      case "Hard":
-      return 12 * this.numSongsPerLive;
-      case "Normal":
-      return 8 * this.numSongsPerLive;
-      case "Easy":
-      return 4 * this.numSongsPerLive;
-      default:
-    }
-  },
-  expGainedPerLive: function() {
-    var baseExp = 0;
-    switch (this.difficulty) {
-      case "Expert":
-      baseExp = 83;
-      break;
-      case "Hard":
-      baseExp = 46;
-      break;
-      case "Normal":
-      baseExp = 26;
-      break;
-      case "Easy":
-      baseExp = 12;
-      break;
-      default:
-    }
-    if (this.expUp === true) {
-      baseExp *= 1.1;
-    }
-    return Math.round(baseExp * this.numSongsPerLive);
-  },
-  ptGainedPerLive: function() {
-    var basePt = 0;
-    switch (this.difficulty) {
-      case "Expert":
-      switch (this.numSongsPerLive) {
-        case 1:
-        basePt = 241;
-        break;
-        case 2:
-        basePt = 500;
-        break;
-        case 3:
-        basePt = 777;
-        break;
-        default:
-      }
-      break;
-      case "Hard":
-      switch (this.numSongsPerLive) {
-        case 1:
-        basePt = 126;
-        break;
-        case 2:
-        basePt = 262;
-        break;
-        case 3:
-        basePt = 408;
-        break;
-        default:
-      }
-      break;
-      case "Normal":
-      switch (this.numSongsPerLive) {
-        case 1:
-        basePt = 72;
-        break;
-        case 2:
-        basePt = 150;
-        break;
-        case 3:
-        basePt = 234;
-        break;
-        default:
-      }
-      break;
-      case "Easy":
-      switch (this.numSongsPerLive) {
-        case 1:
-        basePt = 36;
-        break;
-        case 2:
-        basePt = 64;
-        break;
-        case 3:
-        basePt = 99;
-        break;
-        default:
-      }
-      break;
-      default:
-    }
-    if (this.ptUp === true) {
-      basePt *= 1.1;
-    }
-    return Math.round(basePt * this.scoreBonus() * this.comboBonus());
-  },
-  scoreBonus: function() {
-    switch (this.score) {
-      case "S":
-      return 1.20;
-      case "A":
-      return 1.15;
-      case "B":
-      return 1.10;
-      case "C":
-      return 1.05;
-      default:
-      return 1.00;
-    }
-  },
-  comboBonus: function() {
-    switch (this.combo) {
-      case "S":
-      return 1.08;
-      case "A":
-      return 1.06;
-      case "B":
-      return 1.04;
-      case "C":
-      return 1.02;
-      default:
-      return 1.00;
-    }
-  },
-  remingingTime: 0
+
+var MedelyFestival = function (endDatetime,
+  difficulty, numSongsPerLive, expectedScore, expectedCombo,
+  useExpUp, usePtUp) {
+
+  Event.call(this, endDatetime);
+
+  this.difficulty = difficulty;
+  this.numSongsPerLive = numSongsPerLive;
+  this.expectedScore = expectedScore;
+  this.expectedCombo = expectedCombo;
+
+  this.useExpUp = useExpUp;
+  this.usePtUp = usePtUp;
 };
 
-function resetUser() {
-  user.currentRank = parseInt($("#current-rank").val()) || 0;
-  user.currentExp = parseInt($("#current-exp").val()) || 0;
-  user.currentLp = parseInt($("#current-lp").val()) || 0;
+MedelyFestival.prototype = Object.create(Event.prototype);
 
-  user.currentPt = parseInt($("#current-pt").val()) || 0;
-  user.targetPt = parseInt($("#target-pt").val()) || 0;
+MedelyFestival.prototype.getTimeNeededPerGame = function () {
+  // assume that the duration of each song is 3 min
+  return this.numSongsPerLive * 3;
+};
 
-  setHasError($("#current-rank"), (user.currentRank < 1));
-  errorTicket = errorTicket || (user.currentRank < 1);
-}
+MedelyFestival.prototype.getLpNeededPerGame = function () {
+  switch (this.difficulty) {
+    case "Expert":
+    return 20 * this.numSongsPerLive;
+    case "Hard":
+    return 12 * this.numSongsPerLive;
+    case "Normal":
+    return 8 * this.numSongsPerLive;
+    case "Easy":
+    return 4 * this.numSongsPerLive;
+    default:
+    // TODO: error handing
+  }
+};
 
-function resetMedelyFestival() {
-  medelyFestival.difficulty = $("#difficulty").text();
-  medelyFestival.numSongsPerLive = parseInt($("#num-songs").val()) || 0;
-  medelyFestival.score = $("#score").text();
-  medelyFestival.combo = $("#combo").text();
-  medelyFestival.expUp = $("#exp-up").is(":checked");
-  medelyFestival.ptUp = $("#pt-up").is(":checked");
+MedelyFestival.prototype.getScoreBonus = function () {
+  switch (this.expectedScore) {
+    case "S":
+    return 1.20;
+    case "A":
+    return 1.15;
+    case "B":
+    return 1.10;
+    case "C":
+    return 1.05;
+    default:
+    return 1.00;
+  }
+};
 
-  medelyFestival.remingingTime = helper.remingingTime($("#end-datetime").val());
+MedelyFestival.prototype.getComboBonus = function () {
+  switch (this.expectedCombo) {
+    case "S":
+    return 1.08;
+    case "A":
+    return 1.06;
+    case "B":
+    return 1.04;
+    case "C":
+    return 1.02;
+    default:
+    return 1.00;
+  }
+};
 
-  errorTicket = errorTicket || (1 > medelyFestival.numSongsPerLive || medelyFestival.numSongsPerLive > 3);
-  setHasError($("#num-songs"), (1 > medelyFestival.numSongsPerLive || medelyFestival.numSongsPerLive > 3));
+MedelyFestival.prototype.getPtGainedPerGame = function () {
+  var basePt = 0;
+  switch (this.difficulty) {
+    case "Expert":
+    switch (this.numSongsPerLive) {
+      case 1:
+      basePt = 241;
+      break;
+      case 2:
+      basePt = 500;
+      break;
+      case 3:
+      basePt = 777;
+      break;
+      default:
+      // TODO: error handling
+    }
+    break;
+    case "Hard":
+    switch (this.numSongsPerLive) {
+      case 1:
+      basePt = 126;
+      break;
+      case 2:
+      basePt = 262;
+      break;
+      case 3:
+      basePt = 408;
+      break;
+      default:
+      // TODO: error handling
+    }
+    break;
+    case "Normal":
+    switch (this.numSongsPerLive) {
+      case 1:
+      basePt = 72;
+      break;
+      case 2:
+      basePt = 150;
+      break;
+      case 3:
+      basePt = 234;
+      break;
+      default:
+      // TODO: error handling
+    }
+    break;
+    case "Easy":
+    switch (this.numSongsPerLive) {
+      case 1:
+      basePt = 36;
+      break;
+      case 2:
+      basePt = 64;
+      break;
+      case 3:
+      basePt = 99;
+      break;
+      default:
+      // TODO: error handling
+    }
+    break;
+    default:
+    // TODO: error handling
+  }
+  if (this.usePtUp === true) {
+    basePt *= 1.1;
+  }
+  return Math.round(basePt * this.getScoreBonus() * this.getComboBonus());
+};
 
-  errorTicket = errorTicket || (medelyFestival.remingingTime < 0 || isNaN(medelyFestival.remingingTime));
-  setHasError($("#end-datetime"), (medelyFestival.remingingTime < 0 || isNaN(medelyFestival.remingingTime)));
-}
+MedelyFestival.prototype.getExpGainedPerGame = function () {
+  var baseExp = this.getExpGained(this.difficulty);
+  if (this.expUp === true) {
+    baseExp *= 1.1;
+  }
+  return Math.round(baseExp * this.numSongsPerLive);
+};
 
-function showLovecaNeeded(user, medelyFestival) {
+function showLovecaNeeded() {
   var maxFinalPt = 0;
   var loveca = 0;
 
   while (true) {
-    resetUser();
-    resetMedelyFestival();
+    var currentRank = parseInt($("#current-rank").val()) || 0;
+    var currentExp = parseInt($("#current-exp").val()) || 0;
+    var currentLp = parseInt($("#current-lp").val()) || 0;
+    var targetPt = parseInt($("#target-pt").val()) || 0;
+    var currentPt = parseInt($("#current-pt").val()) || 0;
+    var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
+
+    setHasError($("#current-rank"), (user.currentRank < 1));
+
+    var remainingTime = $("#end-datetime").val();
+    var difficulty = $("#difficulty").text();
+    var numSongsPerLive = parseInt($("#num-songs").val()) || 0;
+    var expectedScore = $("#score").text();
+    var expectedCombo = $("#combo").text();
+    var useExpUp = $("#exp-up").is(":checked");
+    var usePtUp = $("#pt-up").is(":checked");
+
+    var medelyFestival = new MedelyFestival(remainingTime,
+    difficulty, numSongsPerLive, expectedScore, expectedCombo,
+    useExpUp, usePtUp);
+
+    setHasError($("#num-songs"), (!(1 <= numSongsPerLive) && !(numSongsPerLive <= 3)));
+    setHasError($("#end-datetime"), (medelyFestival.remainingTime < 0));
 
     if (errorTicket === true) {
       break;
     }
 
-    var proposedMaxFinalPt = finalPt(loveca, user, medelyFestival);
-    if (proposedMaxFinalPt <= maxFinalPt) {
+    var user = getFinalUserState(loveca, user, medelyFestival);
+    if (user.currentPt <= maxFinalPt) {
       break;
     }
 
-    maxFinalPt = proposedMaxFinalPt;
+    maxFinalPt = user.currentPt;
     if (maxFinalPt >= user.targetPt) {
       break;
     } else {
@@ -224,47 +222,10 @@ function showLovecaNeeded(user, medelyFestival) {
   if (errorTicket == false) {
     var message = "Loveca needed = " + loveca + "\n" +
     "==========\n" +
-    "Final Rank: " + user.currentRank + "\n" +
-    "Final Exp = " + user.currentExp + "\n"  +
+    "Final Rank: " + user.rank + "\n" +
+    "Final Exp = " + user.exp + "\n"  +
     "Final Pt = " + user.currentPt + "\n";
 
     window.alert(message);
-  }
-}
-
-function finalPt(numLoveca, user, medelyFestival) {
-  if (medelyFestival.remingingTime < medelyFestival.timeSpentPerLive()) {
-    // Have no more time for a live
-    return user.currentPt;
-  }
-
-  if (user.currentLp >= medelyFestival.lpSpentPerLive()) {
-    // Have a live
-    medelyFestival.remingingTime -= medelyFestival.timeSpentPerLive();
-    user.currentLp -= medelyFestival.lpSpentPerLive();
-    user.currentPt += medelyFestival.ptGainedPerLive();
-    user.currentExp += medelyFestival.expGainedPerLive();
-
-    // TODO handle current rank > 300
-    if (user.currentExp >= rankUpExp[user.currentRank]) {
-      // Rank up!
-      user.currentExp -= rankUpExp[user.currentRank];
-      user.currentRank += 1;
-      user.currentLp += user.maxLp();
-    }
-
-    return finalPt(numLoveca, user, medelyFestival);
-  } else if (numLoveca > 0) {
-    // Spend a loveca
-    user.currentLp += user.maxLp();
-    numLoveca -= 1;
-    return finalPt(numLoveca, user, medelyFestival);
-  } else if (medelyFestival.remingingTime >= helper.recoveryTime(medelyFestival.lpSpentPerLive() - user.currentLp)) {
-    // Wait for lp recovery
-    medelyFestival.remingingTime -= helper.recoveryTime(medelyFestival.lpSpentPerLive() - user.currentLp);
-    user.currentLp = medelyFestival.lpSpentPerLive();
-    return finalPt(numLoveca, user, medelyFestival);
-  } else {
-    return user.currentPt;
   }
 }

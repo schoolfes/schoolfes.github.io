@@ -1,20 +1,68 @@
-var user = {
-  currentRank: 1,
-  currentExp: 0,
-  currentLp: 0,
-  currentPt: 0,
-  targetPt: 0,
-  maxLp: function() {
-    var lp = 25;
-    for (var i = 1; i <= this.currentRank; i++) {
-      if (i <= 300 && (i % 2) === 0) {
-        lp++;
-      } else if (i > 300 && (i % 3) === 0) {
-        lp++;
-      }
+var User = function (rank, exp, lp, targetPt, currentPt) {
+  this.rank = rank;
+  this.exp = exp;
+  this.lp = lp;
+
+  this.targetPt = targetPt;
+  this.currentPt = currentPt;
+};
+
+User.prototype.getMaxLP = function () {
+  var lp = 25;
+  for (var i = 1; i <= this.rank; i++) {
+    if (i <= 300 && (i % 2) === 0) {
+      lp++;
+    } else if (i > 300 && (i % 3) === 0) {
+      lp++;
     }
-    return lp;
   }
+  return lp;
+};
+
+User.prototype.getRankUpExp = function () {
+  return rankUpExp[this.rank];
+};
+
+var Event = function (endDatetime) {
+  var remainingTimeInMillSec = Date.parse(endDatetime) - Date.now();
+  var remainingTimeInSec = remainingTimeInMillSec / 1000;
+  var remainingTimeInMin = remainingTimeInSec / 60;
+  this.remainingTime = isNaN(remainingTimeInMin) ? 0 : Math.round(remainingTimeInMin);
+};
+
+Event.prototype.getTimeNeededPerGame = function () {
+  // TODO: error hadling
+};
+
+Event.prototype.getLpNeededPerGame = function () {
+  // TODO: error handling
+};
+
+Event.prototype.getPtGainedPerGame = function () {
+  // TODO: error handling
+};
+
+Event.prototype.getExpGained = function (difficulty) {
+  switch (this.difficulty) {
+    case "Expert":
+    return 83;
+    break;
+    case "Hard":
+    return 46;
+    break;
+    case "Normal":
+    return 26;
+    break;
+    case "Easy":
+    return 12;
+    break;
+    default:
+    // TODO: error handling
+  }
+};
+
+Event.prototype.getExpGainedPerGame = function () {
+  // TODO: error handling
 };
 
 var rankUpExp = [
@@ -50,24 +98,55 @@ var rankUpExp = [
   9440, 9474, 9509, 9543, 9578, 9612, 9646, 9681, 9715, 9750,
   9785];
 
+var getFinalUserState = function (loveca, user, event) {
+
+  if (event.remainingTime < event.getTimeNeededPerGame() || user.getMaxLP() < event.getLpNeededPerGame()) {
+    // Have no more time for a game
+    return user;
+  }
+
+  if (user.lp >= event.getLpNeededPerGame()) {
+    // Have a game
+    event.remainingTime -= event.getTimeNeededPerGame();
+    user.lp -= event.getLpNeededPerGame();
+    user.currentPt += event.getPtGainedPerGame();
+    user.exp += event.getExpGainedPerGame();
+
+    // TODO handle current rank > 300
+    if (user.exp >= user.getRankUpExp()) {
+      // Rank up!
+      user.exp -= user.getRankUpExp();
+      user.rank += 1;
+      user.lp += user.getMaxLP();
+    }
+
+    return getFinalUserState(loveca, user, event);
+  } else if (loveca > 0) {
+    // Spend a loveca
+    user.lp += user.getMaxLP();
+    loveca -= 1;
+    return getFinalUserState(loveca, user, event);
+  } else if (event.remainingTime >= getRecoveryTime(event.getLpNeededPerGame() - user.lp)) {
+    // Wait for lp recovery
+    event.remainingTime -= getRecoveryTime(event.getLpNeededPerGame() - user.lp);
+    user.lp = event.getLpNeededPerGame();
+    return getFinalUserState(loveca, user, event);
+  } else {
+    // we have no time to play one more game
+    return user;
+  }
+}
+
+var getRecoveryTime = function (lp) {
+  return lp * 6;
+};
+
 var errorTicket = false;
 function setHasError(inputElement, hasError) {
   if (hasError) {
+    errorTicket = true;
     inputElement.parents(".form-group").addClass("has-error has-feedback");
   } else {
     inputElement.parents(".form-group").removeClass("has-error has-feedback");
   }
 }
-
-var helper = {
-  recoveryTime: function(lp) {
-    return lp * 6;
-  },
-  remingingTime: function(endDatetime) {
-    var remingingTimeInMillSec = Date.parse(endDatetime) - Date.now();
-    var remingingTimeInSec = remingingTimeInMillSec / 1000;
-    var remingingTimeInMin = remingingTimeInSec / 60;
-
-    return Math.round(remingingTimeInMin);
-  }
-};
