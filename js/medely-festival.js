@@ -185,7 +185,7 @@ function showLovecaNeeded() {
     var currentPt = parseInt($("#current-pt").val()) || 0;
     var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
 
-    setHasError($("#current-rank"), (user.currentRank < 1));
+    setHasError($("#current-rank"), (user.rank < 1));
 
     var remainingTime = $("#end-datetime").val();
     var difficulty = $("#difficulty").text();
