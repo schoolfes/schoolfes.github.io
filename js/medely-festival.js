@@ -199,7 +199,7 @@ function showLovecaNeeded() {
     difficulty, numSongsPerLive, expectedScore, expectedCombo,
     useExpUp, usePtUp);
 
-    setHasError($("#num-songs"), (!(1 <= numSongsPerLive) && !(numSongsPerLive <= 3)));
+    setHasError($("#num-songs"), !(1 <= numSongsPerLive && numSongsPerLive <= 3));
     setHasError($("#end-datetime"), (medelyFestival.remainingTime < 0));
 
     if (errorTicket === true) {
