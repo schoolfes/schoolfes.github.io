@@ -174,7 +174,7 @@ MedelyFestival.prototype.getExpGainedPerGame = function () {
 };
 
 function showLovecaNeeded() {
-  var maxFinalPt = 0;
+  var maxFinalPt = -1;
   var loveca = 0;
 
   while (true) {
