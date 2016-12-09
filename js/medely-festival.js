@@ -25,7 +25,9 @@ $(function() {
 
   $("#sif-calculate").click(showInput);
 
-  $endDatetime.val(jpEventEndDateTime.format(momentFormatString));
+  if (jpEventEndDateTime.isValid()) {
+    $endDatetime.val(jpEventEndDateTime.format(momentFormatString));
+  }
 });
 
 function changeDifficulty() {
