@@ -1,3 +1,5 @@
+var jpEventEndDateTimeString = "12/15/2016 03:00 PM GMT+0900";
+
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
 var $currentLp = $("#current-lp");
@@ -20,6 +22,8 @@ $(function() {
   $("#combo-dropdown-menu li a").click(changeCombo);
 
   $("#sif-calculate").click(showInput);
+
+  $endDatetime.val(jpEventEndDateTimeString);
 });
 
 function changeDifficulty() {
