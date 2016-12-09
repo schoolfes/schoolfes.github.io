@@ -197,8 +197,8 @@ function showLovecaNeeded() {
     var currentLp = parseInt($currentLp.val()) || 0;
     var targetPt = parseInt($targetPt.val()) || 0;
     var currentPt = parseInt($currentPt.val()) || 0;
-    var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
 
+    var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
     setHasError($currentRank, (user.rank < 1));
 
     var remainingTime = $endDatetime.val();
@@ -212,7 +212,6 @@ function showLovecaNeeded() {
     var medelyFestival = new MedelyFestival(remainingTime,
     difficulty, numSongsPerLive, expectedScore, expectedCombo,
     useExpUp, usePtUp);
-
     setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
     setHasError($endDatetime, (medelyFestival.remainingTime <= 0));
 
