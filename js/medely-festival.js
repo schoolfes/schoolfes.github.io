@@ -1,4 +1,4 @@
-var jpEventEndDateTimeString = "12/15/2016 03:00 PM GMT+0900";
+var jpEventEndDateTime = moment("12/15/2016 03:00 PM GMT+0900");
 
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
@@ -15,7 +15,9 @@ var $usePtUp = $("#pt-up");
 
 
 $(function() {
-  $(".datetimepicker").datetimepicker();
+  $(".datetimepicker").datetimepicker({
+    format: momentFormatString
+  });
 
   $("#difficulty-dropdown-menu li a").click(changeDifficulty);
   $("#score-dropdown-menu li a").click(changeScore);
@@ -23,7 +25,7 @@ $(function() {
 
   $("#sif-calculate").click(showInput);
 
-  $endDatetime.val(jpEventEndDateTimeString);
+  $endDatetime.val(jpEventEndDateTime.format(momentFormatString));
 });
 
 function changeDifficulty() {

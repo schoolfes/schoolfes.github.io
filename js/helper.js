@@ -150,3 +150,5 @@ function setHasError(inputElement, hasError) {
     inputElement.parents(".form-group").removeClass("has-error has-feedback");
   }
 }
+
+var momentFormatString = "MM/DD/YYYY HH:mm";
