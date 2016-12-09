@@ -1,3 +1,17 @@
+var $currentRank = $("#current-rank");
+var $currentExp = $("#current-exp");
+var $currentLp = $("#current-lp");
+var $targetPt = $("#target-pt");
+var $currentPt = $("#current-pt");
+var $endDatetime = $("#end-datetime");
+var $difficulty = $("#difficulty");
+var $numSongsPerGame = $("#num-songs");
+var $expectedScore = $("#score");
+var $expectedCombo = $("#combo");
+var $useExpUp = $("#exp-up");
+var $usePtUp = $("#pt-up");
+
+
 $(function() {
   $(".datetimepicker").datetimepicker();
 
@@ -9,15 +23,15 @@ $(function() {
 });
 
 function changeDifficulty() {
-  $("#difficulty").text($(this).text());
+  $difficulty.text($(this).text());
 }
 
 function changeScore() {
-  $("#score").text($(this).text());
+  $expectedScore.text($(this).text());
 }
 
 function changeCombo() {
-  $("#combo").text($(this).text());
+  $expectedCombo.text($(this).text());
 }
 
 function showInput() {
@@ -178,29 +192,29 @@ function showLovecaNeeded() {
   var loveca = 0;
 
   while (true) {
-    var currentRank = parseInt($("#current-rank").val()) || 0;
-    var currentExp = parseInt($("#current-exp").val()) || 0;
-    var currentLp = parseInt($("#current-lp").val()) || 0;
-    var targetPt = parseInt($("#target-pt").val()) || 0;
-    var currentPt = parseInt($("#current-pt").val()) || 0;
+    var currentRank = parseInt($currentRank.val()) || 0;
+    var currentExp = parseInt($currentExp.val()) || 0;
+    var currentLp = parseInt($currentLp.val()) || 0;
+    var targetPt = parseInt($targetPt.val()) || 0;
+    var currentPt = parseInt($currentPt.val()) || 0;
     var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
 
-    setHasError($("#current-rank"), (user.rank < 1));
+    setHasError($currentRank, (user.rank < 1));
 
-    var remainingTime = $("#end-datetime").val();
-    var difficulty = $("#difficulty").text();
-    var numSongsPerLive = parseInt($("#num-songs").val()) || 0;
-    var expectedScore = $("#score").text();
-    var expectedCombo = $("#combo").text();
-    var useExpUp = $("#exp-up").is(":checked");
-    var usePtUp = $("#pt-up").is(":checked");
+    var remainingTime = $endDatetime.val();
+    var difficulty = $difficulty.text();
+    var numSongsPerLive = parseInt($numSongsPerGame.val()) || 0;
+    var expectedScore = $expectedScore.text();
+    var expectedCombo = $expectedCombo.text();
+    var useExpUp = $useExpUp.is(":checked");
+    var usePtUp = $usePtUp.is(":checked");
 
     var medelyFestival = new MedelyFestival(remainingTime,
     difficulty, numSongsPerLive, expectedScore, expectedCombo,
     useExpUp, usePtUp);
 
-    setHasError($("#num-songs"), !(1 <= numSongsPerLive && numSongsPerLive <= 3));
-    setHasError($("#end-datetime"), (medelyFestival.remainingTime <= 0));
+    setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
+    setHasError($endDatetime, (medelyFestival.remainingTime <= 0));
 
     if (errorTicket === true) {
       break;
