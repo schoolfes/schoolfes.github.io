@@ -16,7 +16,9 @@ var $usePtUp = $("#pt-up");
 
 $(function() {
   $(".datetimepicker").datetimepicker({
-    format: momentFormatString
+    format: momentFormatString,
+    minDate: Date.now(),
+    maxDate: Date.now() + 1209600000  // set max day to two weeks later
   });
 
   $("#difficulty-dropdown-menu li a").click(changeDifficulty);
