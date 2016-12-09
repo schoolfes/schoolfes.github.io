@@ -221,7 +221,7 @@ function showLovecaNeeded() {
     useExpUp, usePtUp);
     setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
     // the event should not be ended, or has duration longer then 2 weeks
-    setHasError($endDatetime, !(0 <= medelyFestival.remainingTime && medelyFestival.remainingTime <= 60 * 24 * 14));
+    setHasError($endDatetime, !(0 < medelyFestival.remainingTime && medelyFestival.remainingTime <= 60 * 24 * 14));
 
     if (errorTicket === true) {
       break;
