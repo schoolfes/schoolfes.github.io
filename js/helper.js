@@ -137,6 +137,9 @@ var rankUpExp = [
   9440, 9474, 9509, 9543, 9578, 9612, 9646, 9681, 9715, 9750,
   9785];
 
+// assume that the duration of each song is 3 min
+var timeNeededPerSong = 3;
+
 var getRecoveryTime = function (lp) {
   return lp * 6;
 };

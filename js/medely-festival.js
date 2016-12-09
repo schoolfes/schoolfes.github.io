@@ -64,8 +64,7 @@ var MedelyFestival = function (endDatetime,
 MedelyFestival.prototype = Object.create(Event.prototype);
 
 MedelyFestival.prototype.getTimeNeededPerGame = function () {
-  // assume that the duration of each song is 3 min
-  return this.numSongsPerLive * 3;
+  return this.numSongsPerLive * timeNeededPerSong;
 };
 
 MedelyFestival.prototype.getLpNeededPerGame = function () {
