@@ -15,9 +15,14 @@ $(function() {
         expect(user.getRankUpExp()).toBe(4892);
       });
 
-      it('is correct if rank < 100', function() {
+      it('is correct if current rank == 99', function() {
         var user = new User(99, 0, 0, 0, 0);
         expect(user.getRankUpExp()).toBe(1430);
+      });
+
+      it('is correct if current rank == 1', function() {
+        var user = new User(1, 0, 0, 0, 0);
+        expect(user.getRankUpExp()).toBe(6);
       });
 
     });
