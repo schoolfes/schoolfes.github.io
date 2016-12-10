@@ -165,8 +165,8 @@ function showLovecaNeeded() {
     return;
   }
 
-  var loveca = getLovecaNeeded(user, medelyFestival);
-  var finalUserState = getFinalUserState(loveca, user, medelyFestival);
+  var loveca = getLovecaNeeded(user, scoreMatch);
+  var finalUserState = getFinalUserState(loveca, user, scoreMatch);
 
   if (errorTicket == false) {
     var message = "Loveca needed = " + loveca + "\n" +
