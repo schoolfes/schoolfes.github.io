@@ -21,7 +21,11 @@ User.prototype.getMaxLP = function () {
 
 User.prototype.getRankUpExp = function () {
   if (this.rank >= 100) {
-    return rankUpExp[this.rank];
+    if (this.rank > 300) {
+      return Math.round(34.45 * this.rank) - 551;
+    } else {
+      return rankUpExp[this.rank];
+    }
   } else {
     return Math.round(rankUpExp[this.rank] / 2);
   }
@@ -83,7 +87,6 @@ var getFinalUserState = function (loveca, user, event) {
     user.currentPt += event.getPtGainedPerGame();
     user.exp += event.getExpGainedPerGame();
 
-    // TODO handle current rank > 300
     if (user.exp >= user.getRankUpExp()) {
       // Rank up!
       user.exp -= user.getRankUpExp();

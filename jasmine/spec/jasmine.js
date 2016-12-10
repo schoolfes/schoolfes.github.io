@@ -4,7 +4,13 @@ $(function() {
 
     describe('Rank Up Exp', function() {
 
-      it('is correct if rank > 100', function() {
+      it('is in range ±2 if cureent rank == 604', function() {
+        var user = new User(604, 0, 0, 0, 0);
+        expect(user.getRankUpExp()).toBeGreaterThanOrEqual(20258 - 2);
+        expect(user.getRankUpExp()).toBeLessThanOrEqual(20258 + 2);
+      });
+
+      it('is correct if current rank == 158', function() {
         var user = new User(158, 3290, 59, 2376, 600000);
         expect(user.getRankUpExp()).toBe(4892);
       });
