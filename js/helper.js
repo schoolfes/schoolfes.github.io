@@ -20,7 +20,11 @@ User.prototype.getMaxLP = function () {
 };
 
 User.prototype.getRankUpExp = function () {
-  return rankUpExp[this.rank];
+  if (this.rank >= 100) {
+    return rankUpExp[this.rank];
+  } else {
+    return Math.round(rankUpExp[this.rank] / 2);
+  }
 };
 
 var Event = function (endDatetime) {
