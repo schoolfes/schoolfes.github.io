@@ -1,6 +1,6 @@
 $(function() {
 
-  var weekInMinutes = twoWeeksInMilliseconds / 2 / 1000 / 60;
+  var weekInMinutes = twoWeeksInMilliseconds / 2;
 
   describe('User', function() {
 
@@ -41,7 +41,7 @@ $(function() {
 
       it('is correct', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
-        var scoreMatch = new ScoreMatch(Date.now() / 1000 / 60 + weekInMinutes,
+        var scoreMatch = new ScoreMatch(Date.now() + weekInMinutes,
         'Hard', 'C', '1st');
 
         user = getFinalUserState(0, user, scoreMatch);
@@ -65,7 +65,7 @@ $(function() {
 
       it('is correct', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
-        var medelyFestival = new MedelyFestival(Date.now() / 1000 / 60 + weekInMinutes,
+        var medelyFestival = new MedelyFestival(Date.now() + weekInMinutes,
         'Expert', 3, 'S', 'A',
         true, true);
 

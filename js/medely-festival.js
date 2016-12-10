@@ -68,7 +68,7 @@ var MedelyFestival = function (endDatetime,
 MedelyFestival.prototype = Object.create(Event.prototype);
 
 MedelyFestival.prototype.clone = function () {
-  return new MedelyFestival(Date.now() / 1000 / 60 + this.remainingTime,
+  return new MedelyFestival(Date.now() + this.remainingTimeInMinutes,
     this.difficulty, this.numSongsPerLive, this.expectedScore, this.expectedCombo,
     this.useExpUp, this.usePtUp);
 };
@@ -220,12 +220,12 @@ function showLovecaNeeded() {
   var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
   setHasError($currentRank, (user.rank < 1));
 
-  var medelyFestival = new MedelyFestival(Date.parse(endDatetime) / 1000 / 60,
+  var medelyFestival = new MedelyFestival(Date.parse(endDatetime),
   difficulty, numSongsPerLive, expectedScore, expectedCombo,
   useExpUp, usePtUp);
   setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
   // the event should not be ended, or has duration longer then 2 weeks
-  setHasError($endDatetime, !(0 < medelyFestival.remainingTime && medelyFestival.remainingTime <= twoWeeksInMinutes));
+  setHasError($endDatetime, !(0 < medelyFestival.remainingTimeInMinutes && medelyFestival.remainingTimeInMinutes <= twoWeeksInMinutes));
 
   if (errorTicket === true) {
     return;

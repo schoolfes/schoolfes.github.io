@@ -36,11 +36,11 @@ User.prototype.getRankUpExp = function () {
 };
 
 var Event = function (endDatetime) {
-  this.remainingTime = endDatetime - (Date.now() / 1000 / 60);
+  this.remainingTimeInMinutes = (endDatetime - Date.now()) / 1000 / 60;
 };
 
 Event.prototype.clone = function () {
-  return new Event(Date.now() / 1000 / 60 + this.remainingTime);
+  return new Event(Date.now() + this.remainingTimeInMinutes * 1000 * 60);
 };
 
 Event.prototype.getTimeNeededPerGame = function () {
@@ -80,14 +80,14 @@ Event.prototype.getExpGainedPerGame = function () {
 
 var getFinalUserState = function (loveca, user, event) {
 
-  if (event.remainingTime < event.getTimeNeededPerGame() || user.getMaxLP() < event.getLpNeededPerGame()) {
+  if (event.remainingTimeInMinutes < event.getTimeNeededPerGame() || user.getMaxLP() < event.getLpNeededPerGame()) {
     // Have no more time for a game
     return user;
   }
 
   if (user.lp >= event.getLpNeededPerGame()) {
     // Have a game
-    event.remainingTime -= event.getTimeNeededPerGame();
+    event.remainingTimeInMinutes -= event.getTimeNeededPerGame();
     user.lp -= event.getLpNeededPerGame();
     user.currentPt += event.getPtGainedPerGame();
     user.exp += event.getExpGainedPerGame();
@@ -105,9 +105,9 @@ var getFinalUserState = function (loveca, user, event) {
     user.lp += user.getMaxLP();
     loveca -= 1;
     return getFinalUserState(loveca, user, event);
-  } else if (event.remainingTime >= getRecoveryTime(event.getLpNeededPerGame() - user.lp)) {
+  } else if (event.remainingTimeInMinutes >= getRecoveryTime(event.getLpNeededPerGame() - user.lp)) {
     // Wait for lp recovery
-    event.remainingTime -= getRecoveryTime(event.getLpNeededPerGame() - user.lp);
+    event.remainingTimeInMinutes -= getRecoveryTime(event.getLpNeededPerGame() - user.lp);
     user.lp = event.getLpNeededPerGame();
     return getFinalUserState(loveca, user, event);
   } else {
