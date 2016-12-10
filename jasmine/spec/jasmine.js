@@ -53,6 +53,21 @@ $(function() {
 
     });
 
+    describe('Estimated loveca needed', function() {
+
+      it('is correct', function() {
+        var user = new User(158, 3290, 59, 60000, 20124);
+        var scoreMatch = new ScoreMatch(Date.now() + weekInMinutes,
+        'Hard', 'A', '1st');
+
+        var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
+        expect(lovecaNeeded).toBe(5);
+        expect(getFinalUserState(lovecaNeeded - 1, user, scoreMatch).currentPt).toBeLessThan(60000 - 1);
+        expect(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt).toBeGreaterThan(60000);
+      });
+
+    });
+
   });
 
   describe('Medely Festival', function() {
@@ -74,6 +89,22 @@ $(function() {
         expect(user.rank).toBe(160);
         expect(user.exp).toBe(1190);
         expect(user.currentPt).toBe(53821);
+      });
+
+    });
+
+    describe('Estimated loveca needed', function() {
+
+      it('is correct', function() {
+        var user = new User(158, 3290, 59, 60000, 20124);
+        var medelyFestival = new MedelyFestival(Date.now() + weekInMinutes,
+        'Expert', 3, 'S', 'A',
+        true, true);
+
+        var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
+        expect(lovecaNeeded).toBe(4);
+        expect(getFinalUserState(lovecaNeeded - 1, user, medelyFestival).currentPt).toBeLessThan(60000 - 1);
+        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBeGreaterThan(60000);
       });
 
     });
