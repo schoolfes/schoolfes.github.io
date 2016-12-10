@@ -141,4 +141,58 @@ $(function() {
 
   });
 
+  describe('Challenge Festival', function() {
+
+    it('is defined', function() {
+      expect(ChallengeFestival).toBeDefined();
+    });
+
+    describe('User statue at the end', function() {
+
+      it('is correct', function() {
+        var user = new User(158, 3290, 59, 60000, 20124);
+        var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
+        'Expert', 3, 'S', 'A',
+        1, 0, 0,
+        true, true);
+
+        user = getFinalUserState(0, user, challengeFestival);
+
+        expect(user.rank).toBe(159);
+        expect(user.exp).toBe(4374);
+        expect(user.currentPt).toBe(52356);
+      });
+
+    });
+
+    describe('Estimated loveca needed', function() {
+
+      it('is correct', function() {
+        var user = new User(158, 3290, 59, 60000, 20124);
+        var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
+        'Expert', 3, 'S', 'A',
+        1, 0, 0,
+        true, true);
+
+        var lovecaNeeded = getLovecaNeeded(user, challengeFestival);
+        expect(lovecaNeeded).toBe(4);
+        expect(getFinalUserState(lovecaNeeded - 1, user, challengeFestival).currentPt).toBeLessThan(60000 - 1);
+        expect(getFinalUserState(lovecaNeeded, user, challengeFestival).currentPt).toBeGreaterThan(60000);
+      });
+
+      it('is correct if taget can\'t be archived because of not enough time given', function() {
+        var user = new User(158, 3290, 59, 1000000, 0);
+        var medelyFestival = new ChallengeFestival(Date.now() + 1000 * 60 * 1,
+        'Expert', 3, 'S', 'A',
+        1, 0, 0,
+        true, true);
+
+        var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
+        expect(lovecaNeeded).toBe(0);
+        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, medelyFestival).currentPt);
+      });
+
+    });
+
+  });
 }());
