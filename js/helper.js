@@ -109,7 +109,7 @@ var getFinalUserState = function (loveca, user, event) {
     // we have no time to play one more game
     return user;
   }
-}
+};
 
 var rankUpExp = [
   0, 11, 13, 16, 20, 26, 32, 39, 48, 57,
