@@ -125,6 +125,11 @@ var getLovecaNeeded = function (user, event) {
     var clonedEvent = event.clone();
     var finalUserState = getFinalUserState(loveca, clonedUser, clonedEvent);
     if (finalUserState.currentPt <= maxFinalPt) {
+      if (loveca > 0) {
+        // there is no diffence betweeen this trial and previous trial,
+        // which means the loveca used in this trial is redundant.
+        loveca--;
+      }
       break;
     }
 
