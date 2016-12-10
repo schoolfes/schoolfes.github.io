@@ -99,6 +99,13 @@ var getFinalUserState = function (loveca, user, event) {
       user.lp += user.getMaxLP();
     }
 
+    if (event instanceof ChallengeFestival) {
+      event.currentRound++;
+      if (event.currentRound > event.numRoundsPerGame) {
+        event.currentRound = 1;
+      }
+    }
+
     return getFinalUserState(loveca, user, event);
   } else if (loveca > 0) {
     // Spend a loveca
@@ -112,6 +119,11 @@ var getFinalUserState = function (loveca, user, event) {
     return getFinalUserState(loveca, user, event);
   } else {
     // we have no time to play one more game
+    if (event instanceof ChallengeFestival) {
+      user.currentPt += event.notRedeemedPt;
+      user.exp += event.notRedeemedExp;
+    }
+
     return user;
   }
 };
