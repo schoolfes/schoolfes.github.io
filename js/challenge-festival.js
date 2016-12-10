@@ -284,8 +284,9 @@ ChallengeFestival.prototype.run = function (loveca, user) {
     return this.run(loveca, user);
   } else if (this.remainingTimeInMinutes >= getRecoveryTime(this.getLpNeededPerGame() - user.lp)) {
     // Wait for lp recovery
-    this.remainingTimeInMinutes -= getRecoveryTime(this.getLpNeededPerGame() - user.lp);
-    user.lp = this.getLpNeededPerGame();
+    var recoveryTime = getRecoveryTime(this.getLpNeededPerGame() - user.lp)
+    this.remainingTimeInMinutes -= recoveryTime;
+    user.lp += this.getLpGain(recoveryTime);
     return this.run(loveca, user);
   } else {
     // we have no chance to gain enough lp for a new game
