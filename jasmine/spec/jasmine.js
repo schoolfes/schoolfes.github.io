@@ -178,6 +178,36 @@ $(function() {
       expect(ChallengeFestival).toBeDefined();
     });
 
+    describe('Pt Gain', function() {
+
+      it('is correct with level expert score S combo A at round 4', function() {
+        var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
+        'Expert', 4, 'S', 'A',
+        4, 0, 0,
+        false, false);
+
+        expect(challengeFestival.getPtGainedPerGame()).toBe(455);
+      });
+
+      it('is correct with level easy score C combo B at round 5', function() {
+        var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
+        'Easy', 5, 'C', 'B',
+        5, 0, 0,
+        false, false);
+
+        expect(challengeFestival.getPtGainedPerGame()).toBe(47);
+      });
+
+      it('is correct with level hard score None combo None at round 3', function() {
+        var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
+        'Hard', 3, 'None', 'None',
+        3, 0, 0,
+        false, false);
+
+        expect(challengeFestival.getPtGainedPerGame()).toBe(170);
+      });
+    });
+
     describe('User statue at the end', function() {
 
       it('is correct', function() {
