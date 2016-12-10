@@ -99,7 +99,7 @@ var getFinalUserState = function (loveca, user, event) {
       user.lp += user.getMaxLP();
     }
 
-    if (ChallengeFestival != undefined && event instanceof ChallengeFestival) {
+    if (event instanceof ChallengeFestival) {
       event.currentRound++;
       if (event.currentRound > event.numRoundsPerGame) {
         event.currentRound = 1;
@@ -119,7 +119,7 @@ var getFinalUserState = function (loveca, user, event) {
     return getFinalUserState(loveca, user, event);
   } else {
     // we have no time to play one more game
-    if (ChallengeFestival != undefined && event instanceof ChallengeFestival) {
+    if (event instanceof ChallengeFestival) {
       user.currentPt += event.notRedeemedPt;
       user.exp += event.notRedeemedExp;
     }
