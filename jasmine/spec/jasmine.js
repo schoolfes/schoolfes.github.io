@@ -182,14 +182,14 @@ $(function() {
 
       it('is correct if taget can\'t be archived because of not enough time given', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
-        var medelyFestival = new ChallengeFestival(Date.now() + 1000 * 60 * 1,
+        var challengeFestival = new ChallengeFestival(Date.now() + 1000 * 60 * 1,
         'Expert', 3, 'S', 'A',
         1, 0, 0,
         true, true);
 
-        var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
+        var lovecaNeeded = getLovecaNeeded(user, challengeFestival);
         expect(lovecaNeeded).toBe(0);
-        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, medelyFestival).currentPt);
+        expect(getFinalUserState(lovecaNeeded, user, challengeFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, challengeFestival).currentPt);
       });
 
     });
