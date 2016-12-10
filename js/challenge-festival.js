@@ -254,6 +254,15 @@ ChallengeFestival.prototype.getExpGainedPerGame = function () {
   }
 };
 
+ChallengeFestival.prototype.play = function (user) {
+  Event.prototype.play.call(this, user);
+
+  this.currentRound++;
+  if (this.currentRound > this.numRoundsPerGame) {
+    this.currentRound = 1;
+  }
+};
+
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
