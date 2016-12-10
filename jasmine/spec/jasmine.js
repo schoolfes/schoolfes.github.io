@@ -31,6 +31,15 @@ $(function() {
 
   });
 
+  describe('Max Lp', function() {
+
+    it('is current if cureent rank == 158', function() {
+      var user = new User(158, 0, 0, 0, 0);
+      expect(user.getMaxLP()).toBe(104);
+    });
+
+  });
+
   describe('Score Match', function() {
 
     it('is defined', function() {
