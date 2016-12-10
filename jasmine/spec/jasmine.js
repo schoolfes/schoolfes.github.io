@@ -56,8 +56,8 @@ $(function() {
         scoreMatch.run(0, user);
 
         expect(user.rank).toBe(159);
-        expect(user.exp).toBe(3826);
-        expect(user.currentPt).toBe(47500);
+        expect(user.exp).toBe(4010);
+        expect(user.currentPt).toBe(48428);
       });
 
     });
@@ -73,7 +73,7 @@ $(function() {
         var clonedScoreMatch = scoreMatch.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
-        expect(lovecaNeeded).toBe(5);
+        expect(lovecaNeeded).toBe(4);
 
         scoreMatch.run(lovecaNeeded - 1, user);
         clonedScoreMatch.run(lovecaNeeded, clonedUser);
@@ -123,8 +123,8 @@ $(function() {
         medelyFestival.run(0, user);
 
         expect(user.rank).toBe(160);
-        expect(user.exp).toBe(1190);
-        expect(user.currentPt).toBe(53821);
+        expect(user.exp).toBe(1439);
+        expect(user.currentPt).toBe(54908);
       });
 
     });
@@ -141,7 +141,7 @@ $(function() {
         var clonedMedelyFestival = medelyFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
-        expect(lovecaNeeded).toBe(4);
+        expect(lovecaNeeded).toBe(3);
 
         medelyFestival.run(lovecaNeeded - 1, user);
         clonedMedelyFestival.run(lovecaNeeded, clonedUser);
@@ -220,8 +220,8 @@ $(function() {
         challengeFestival.run(0, user);
 
         expect(user.rank).toBe(159);
-        expect(user.exp).toBe(4374);
-        expect(user.currentPt).toBe(52356);
+        expect(user.exp).toBe(4457);
+        expect(user.currentPt).toBe(52777);
       });
 
     });
@@ -239,7 +239,7 @@ $(function() {
         var clonedChallengeFestival = challengeFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, challengeFestival);
-        expect(lovecaNeeded).toBe(4);
+        expect(lovecaNeeded).toBe(3);
 
         challengeFestival.run(lovecaNeeded - 1, user);
         clonedChallengeFestival.run(lovecaNeeded, clonedUser);

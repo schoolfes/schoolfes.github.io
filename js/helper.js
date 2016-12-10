@@ -51,6 +51,10 @@ Event.prototype.getLpNeededPerGame = function () {
   // TODO: error handling
 };
 
+Event.prototype.getLpGain = function (time) {
+  return time / 6;
+}
+
 Event.prototype.getPtGainedPerGame = function () {
   // TODO: error handling
 };
@@ -81,6 +85,7 @@ Event.prototype.getExpGainedPerGame = function () {
 Event.prototype.play = function (user) {
   this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
   user.lp -= this.getLpNeededPerGame();
+  user.lp += this.getLpGain(this.getTimeNeededPerGame());
   user.currentPt += this.getPtGainedPerGame();
   user.exp += this.getExpGainedPerGame();
 
@@ -88,6 +93,7 @@ Event.prototype.play = function (user) {
     // Rank up!
     user.exp -= user.getRankUpExp();
     user.rank += 1;
+    // lpAdded += user.getMaxLP();
     user.lp += user.getMaxLP();
   }
 };
@@ -105,13 +111,15 @@ Event.prototype.run = function (loveca, user) {
     return this.run(loveca, user);
   } else if (loveca > 0) {
     // Spend a loveca
+    // lpAdded += user.getMaxLP();
     user.lp += user.getMaxLP();
     loveca -= 1;
     return this.run(loveca, user);
   } else if (this.remainingTimeInMinutes >= getRecoveryTime(this.getLpNeededPerGame() - user.lp)) {
     // Wait for lp recovery
-    this.remainingTimeInMinutes -= getRecoveryTime(this.getLpNeededPerGame() - user.lp);
-    user.lp = this.getLpNeededPerGame();
+    var recoveryTime = getRecoveryTime(this.getLpNeededPerGame() - user.lp)
+    this.remainingTimeInMinutes -= recoveryTime;
+    user.lp += this.getLpGain(recoveryTime);
     return this.run(loveca, user);
   } else {
     // we have no chance to gain enough lp for a new game
