@@ -13,7 +13,7 @@ $(function() {
       });
 
       it('is correct if current rank == 158', function() {
-        var user = new User(158, 3290, 59, 600000, 20124);
+        var user = new User(158, 3290, 59, 60000, 20124);
         expect(user.getRankUpExp()).toBe(4892);
       });
 
