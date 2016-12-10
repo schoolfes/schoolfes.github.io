@@ -68,7 +68,7 @@ var MedelyFestival = function (endDatetime,
 MedelyFestival.prototype = Object.create(Event.prototype);
 
 MedelyFestival.prototype.clone = function () {
-  return new MedelyFestival(Date.now() + this.remainingTimeInMinutes,
+  return new MedelyFestival(Date.now() + this.remainingTimeInMinutes * 10000 * 60,
     this.difficulty, this.numSongsPerLive, this.expectedScore, this.expectedCombo,
     this.useExpUp, this.usePtUp);
 };
