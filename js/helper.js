@@ -7,6 +7,10 @@ var User = function (rank, exp, lp, targetPt, currentPt) {
   this.currentPt = currentPt;
 };
 
+User.prototype.clone = function () {
+  return new User(this.rank, this.exp, this.lp, this.targetPt, this.currentPt);
+};
+
 User.prototype.getMaxLP = function () {
   var lp = 25;
   for (var i = 1; i <= this.rank; i++) {
@@ -32,10 +36,11 @@ User.prototype.getRankUpExp = function () {
 };
 
 var Event = function (endDatetime) {
-  var remainingTimeInMillSec = Date.parse(endDatetime) - Date.now();
-  var remainingTimeInSec = remainingTimeInMillSec / 1000;
-  var remainingTimeInMin = remainingTimeInSec / 60;
-  this.remainingTime = isNaN(remainingTimeInMin) ? 0 : Math.round(remainingTimeInMin);
+  this.remainingTime = endDatetime - (Date.now() / 1000 / 60);
+};
+
+Event.prototype.clone = function () {
+  return new Event(Date.now() / 1000 / 60 + this.remainingTime);
 };
 
 Event.prototype.getTimeNeededPerGame = function () {
@@ -109,6 +114,29 @@ var getFinalUserState = function (loveca, user, event) {
     // we have no time to play one more game
     return user;
   }
+};
+
+var getLovecaNeeded = function (user, event) {
+  var maxFinalPt = -1;
+  var loveca = 0;
+
+  while (true) {
+    var clonedUser = user.clone();
+    var clonedEvent = event.clone();
+    var finalUserState = getFinalUserState(loveca, clonedUser, clonedEvent);
+    if (finalUserState.currentPt <= maxFinalPt) {
+      break;
+    }
+
+    maxFinalPt = finalUserState.currentPt;
+    if (maxFinalPt >= finalUserState.targetPt) {
+      break;
+    } else {
+      loveca++;
+    }
+  }
+
+  return loveca;
 };
 
 var rankUpExp = [

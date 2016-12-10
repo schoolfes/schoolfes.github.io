@@ -136,52 +136,38 @@ ScoreMatch.prototype.getExpGainedPerGame = function () {
 };
 
 function showLovecaNeeded() {
-  var maxFinalPt = -1;
-  var loveca = 0;
-
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
   var currentLp = parseInt($currentLp.val()) || 0;
   var targetPt = parseInt($targetPt.val()) || 0;
   var currentPt = parseInt($currentPt.val()) || 0;
 
-  var remainingTime = $endDatetime.val();
+  var endDatetime = $endDatetime.val();
   var difficulty = $difficulty.text();
   var expectedScore = $expectedScore.text();
   var expectedRanking = $expectedRanking.text();
 
-  while (true) {
-    var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
-    setHasError($currentRank, (user.rank < 1));
+  var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
+  setHasError($currentRank, (user.rank < 1));
 
-    var scoreMatch = new ScoreMatch(remainingTime,
-    difficulty, expectedScore, expectedRanking);
-    // the event should not be ended, or has duration longer then 2 weeks
-    setHasError($endDatetime, !(0 < scoreMatch.remainingTime && scoreMatch.remainingTime <= twoWeeksInMinutes));
+  var scoreMatch = new ScoreMatch(Date.parse(endDatetime) / 1000 / 60,
+  difficulty, expectedScore, expectedRanking);
+  // the event should not be ended, or has duration longer then 2 weeks
+  setHasError($endDatetime, !(0 < scoreMatch.remainingTime && scoreMatch.remainingTime <= twoWeeksInMinutes));
 
-    if (errorTicket === true) {
-      break;
-    }
-
-    var user = getFinalUserState(loveca, user, scoreMatch);
-    if (user.currentPt <= maxFinalPt) {
-      break;
-    }
-
-    maxFinalPt = user.currentPt;
-    if (maxFinalPt >= user.targetPt) {
-      break;
-    } else {
-      loveca++;
-    }
+  if (errorTicket === true) {
+    return;
   }
+
+  var loveca = getLovecaNeeded(user, medelyFestival);
+  var finalUserState = getFinalUserState(loveca, user, medelyFestival);
 
   if (errorTicket == false) {
     var message = "Loveca needed = " + loveca + "\n" +
     "==========\n" +
-    "Final Rank: " + user.rank + "\n" +
-    "Final Exp = " + user.exp + "\n"  +
-    "Final Pt = " + user.currentPt + "\n";
+    "Final Rank: " + finalUserState.rank + "\n" +
+    "Final Exp = " + finalUserState.exp + "\n"  +
+    "Final Pt = " + finalUserState.currentPt + "\n";
 
     window.alert(message);
   }

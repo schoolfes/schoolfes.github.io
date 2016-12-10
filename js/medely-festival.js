@@ -67,6 +67,12 @@ var MedelyFestival = function (endDatetime,
 
 MedelyFestival.prototype = Object.create(Event.prototype);
 
+MedelyFestival.prototype.clone = function () {
+  return new MedelyFestival(Date.now() / 1000 / 60 + this.remainingTime,
+    this.difficulty, this.numSongsPerLive, this.expectedScore, this.expectedCombo,
+    this.useExpUp, this.usePtUp);
+};
+
 MedelyFestival.prototype.getTimeNeededPerGame = function () {
   return this.numSongsPerLive * timeNeededPerSong;
 };
@@ -197,16 +203,13 @@ MedelyFestival.prototype.getExpGainedPerGame = function () {
 };
 
 function showLovecaNeeded() {
-  var maxFinalPt = -1;
-  var loveca = 0;
-
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
   var currentLp = parseInt($currentLp.val()) || 0;
   var targetPt = parseInt($targetPt.val()) || 0;
   var currentPt = parseInt($currentPt.val()) || 0;
 
-  var remainingTime = $endDatetime.val();
+  var endDatetime = $endDatetime.val();
   var difficulty = $difficulty.text();
   var numSongsPerLive = parseInt($numSongsPerGame.val()) || 0;
   var expectedScore = $expectedScore.text();
@@ -214,41 +217,28 @@ function showLovecaNeeded() {
   var useExpUp = $useExpUp.is(":checked");
   var usePtUp = $usePtUp.is(":checked");
 
-  while (true) {
-    var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
-    setHasError($currentRank, (user.rank < 1));
+  var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
+  setHasError($currentRank, (user.rank < 1));
 
-    var medelyFestival = new MedelyFestival(remainingTime,
-    difficulty, numSongsPerLive, expectedScore, expectedCombo,
-    useExpUp, usePtUp);
-    setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
-    // the event should not be ended, or has duration longer then 2 weeks
-    setHasError($endDatetime, !(0 < medelyFestival.remainingTime && medelyFestival.remainingTime <= twoWeeksInMinutes));
+  var medelyFestival = new MedelyFestival(Date.parse(endDatetime) / 1000 / 60,
+  difficulty, numSongsPerLive, expectedScore, expectedCombo,
+  useExpUp, usePtUp);
+  setHasError($numSongsPerGame, !(1 <= numSongsPerLive && numSongsPerLive <= 3));
+  // the event should not be ended, or has duration longer then 2 weeks
+  setHasError($endDatetime, !(0 < medelyFestival.remainingTime && medelyFestival.remainingTime <= twoWeeksInMinutes));
 
-    if (errorTicket === true) {
-      break;
-    }
-
-    var user = getFinalUserState(loveca, user, medelyFestival);
-    if (user.currentPt <= maxFinalPt) {
-      break;
-    }
-
-    maxFinalPt = user.currentPt;
-    if (maxFinalPt >= user.targetPt) {
-      break;
-    } else {
-      loveca++;
-    }
+  if (errorTicket === true) {
+    return;
   }
 
-  if (errorTicket == false) {
-    var message = "Loveca needed = " + loveca + "\n" +
-    "==========\n" +
-    "Final Rank: " + user.rank + "\n" +
-    "Final Exp = " + user.exp + "\n"  +
-    "Final Pt = " + user.currentPt + "\n";
+  var loveca = getLovecaNeeded(user, medelyFestival);
+  var finalUserState = getFinalUserState(loveca, user, medelyFestival);
 
-    window.alert(message);
-  }
+  var message = "Loveca needed = " + loveca + "\n" +
+  "==========\n" +
+  "Final Rank: " + finalUserState.rank + "\n" +
+  "Final Exp = " + finalUserState.exp + "\n"  +
+  "Final Pt = " + finalUserState.currentPt + "\n";
+
+  window.alert(message);
 }
