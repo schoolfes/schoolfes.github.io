@@ -60,7 +60,7 @@ var ScoreMatch = function (endDatetime,
 ScoreMatch.prototype = Object.create(Event.prototype);
 
 ScoreMatch.prototype.clone = function () {
-  return new ScoreMatch(Date.now() + this.remainingTimeInMinutes * 10000 * 60,
+  return new ScoreMatch(Date.now() + this.remainingTimeInMinutes * 1000 * 60,
     this.difficulty, this.expectedScore, this.expectedRanking);
 };
 
