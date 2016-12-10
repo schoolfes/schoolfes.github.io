@@ -200,23 +200,23 @@ function showLovecaNeeded() {
   var maxFinalPt = -1;
   var loveca = 0;
 
-  while (true) {
-    var currentRank = parseInt($currentRank.val()) || 0;
-    var currentExp = parseInt($currentExp.val()) || 0;
-    var currentLp = parseInt($currentLp.val()) || 0;
-    var targetPt = parseInt($targetPt.val()) || 0;
-    var currentPt = parseInt($currentPt.val()) || 0;
+  var currentRank = parseInt($currentRank.val()) || 0;
+  var currentExp = parseInt($currentExp.val()) || 0;
+  var currentLp = parseInt($currentLp.val()) || 0;
+  var targetPt = parseInt($targetPt.val()) || 0;
+  var currentPt = parseInt($currentPt.val()) || 0;
 
+  var remainingTime = $endDatetime.val();
+  var difficulty = $difficulty.text();
+  var numSongsPerLive = parseInt($numSongsPerGame.val()) || 0;
+  var expectedScore = $expectedScore.text();
+  var expectedCombo = $expectedCombo.text();
+  var useExpUp = $useExpUp.is(":checked");
+  var usePtUp = $usePtUp.is(":checked");
+
+  while (true) {
     var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
     setHasError($currentRank, (user.rank < 1));
-
-    var remainingTime = $endDatetime.val();
-    var difficulty = $difficulty.text();
-    var numSongsPerLive = parseInt($numSongsPerGame.val()) || 0;
-    var expectedScore = $expectedScore.text();
-    var expectedCombo = $expectedCombo.text();
-    var useExpUp = $useExpUp.is(":checked");
-    var usePtUp = $usePtUp.is(":checked");
 
     var medelyFestival = new MedelyFestival(remainingTime,
     difficulty, numSongsPerLive, expectedScore, expectedCombo,
