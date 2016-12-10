@@ -263,6 +263,39 @@ ChallengeFestival.prototype.play = function (user) {
   }
 };
 
+ChallengeFestival.prototype.run = function (loveca, user) {
+  if (this.remainingTimeInMinutes < this.getTimeNeededPerGame() || user.getMaxLP() < this.getLpNeededPerGame()) {
+    // Have no more time for a game
+    user.currentPt += this.notRedeemedPt;
+    user.exp += this.notRedeemedExp;
+
+    return;
+  }
+
+  if (user.lp >= this.getLpNeededPerGame()) {
+    // Have a game
+    this.play(user);
+
+    return this.run(loveca, user);
+  } else if (loveca > 0) {
+    // Spend a loveca
+    user.lp += user.getMaxLP();
+    loveca -= 1;
+    return this.run(loveca, user);
+  } else if (this.remainingTimeInMinutes >= getRecoveryTime(this.getLpNeededPerGame() - user.lp)) {
+    // Wait for lp recovery
+    this.remainingTimeInMinutes -= getRecoveryTime(this.getLpNeededPerGame() - user.lp);
+    user.lp = this.getLpNeededPerGame();
+    return this.run(loveca, user);
+  } else {
+    // we have no chance to gain enough lp for a new game
+    user.currentPt += this.notRedeemedPt;
+    user.exp += this.notRedeemedExp;
+
+    return;
+  }
+};
+
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
@@ -297,13 +330,13 @@ function showLovecaNeeded() {
   }
 
   var loveca = getLovecaNeeded(user, challengeFestival);
-  var finalUserState = getFinalUserState(loveca, user, challengeFestival);
+  challengeFestival.run(loveca, user);
 
   var message = "Loveca needed = " + loveca + "\n" +
   "==========\n" +
-  "Final Rank: " + finalUserState.rank + "\n" +
-  "Final Exp = " + finalUserState.exp + "\n"  +
-  "Final Pt = " + finalUserState.currentPt + "\n";
+  "Final Rank: " + user.rank + "\n" +
+  "Final Exp = " + user.exp + "\n"  +
+  "Final Pt = " + user.currentPt + "\n";
 
   window.alert(message);
 }

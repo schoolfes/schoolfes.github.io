@@ -92,40 +92,30 @@ Event.prototype.play = function (user) {
   }
 };
 
-var ScoreMatch = undefined;
-var MedelyFestival = undefined;
-var ChallengeFestival = undefined;
-
-var getFinalUserState = function (loveca, user, event) {
-
-  if (event.remainingTimeInMinutes < event.getTimeNeededPerGame() || user.getMaxLP() < event.getLpNeededPerGame()) {
+Event.prototype.run = function (loveca, user) {
+  if (this.remainingTimeInMinutes < this.getTimeNeededPerGame() || user.getMaxLP() < this.getLpNeededPerGame()) {
     // Have no more time for a game
-    return user;
+    return;
   }
 
-  if (user.lp >= event.getLpNeededPerGame()) {
+  if (user.lp >= this.getLpNeededPerGame()) {
     // Have a game
-    event.play(user);
+    this.play(user);
 
-    return getFinalUserState(loveca, user, event);
+    return this.run(loveca, user);
   } else if (loveca > 0) {
     // Spend a loveca
     user.lp += user.getMaxLP();
     loveca -= 1;
-    return getFinalUserState(loveca, user, event);
-  } else if (event.remainingTimeInMinutes >= getRecoveryTime(event.getLpNeededPerGame() - user.lp)) {
+    return this.run(loveca, user);
+  } else if (this.remainingTimeInMinutes >= getRecoveryTime(this.getLpNeededPerGame() - user.lp)) {
     // Wait for lp recovery
-    event.remainingTimeInMinutes -= getRecoveryTime(event.getLpNeededPerGame() - user.lp);
-    user.lp = event.getLpNeededPerGame();
-    return getFinalUserState(loveca, user, event);
+    this.remainingTimeInMinutes -= getRecoveryTime(this.getLpNeededPerGame() - user.lp);
+    user.lp = this.getLpNeededPerGame();
+    return this.run(loveca, user);
   } else {
-    // we have no time to play one more game
-    if (ChallengeFestival !== undefined && event instanceof ChallengeFestival) {
-      user.currentPt += event.notRedeemedPt;
-      user.exp += event.notRedeemedExp;
-    }
-
-    return user;
+    // we have no chance to gain enough lp for a new game
+    return;
   }
 };
 
@@ -134,10 +124,13 @@ var getLovecaNeeded = function (user, event) {
   var loveca = 0;
 
   while (true) {
+    // console.log("new trial");
     var clonedUser = user.clone();
     var clonedEvent = event.clone();
-    var finalUserState = getFinalUserState(loveca, clonedUser, clonedEvent);
-    if (finalUserState.currentPt <= maxFinalPt) {
+
+    clonedEvent.run(loveca, clonedUser);
+
+    if (clonedUser.currentPt <= maxFinalPt) {
       if (loveca > 0) {
         // there is no diffence betweeen this trial and previous trial,
         // which means the extra loveca used in this trial is redundant.
@@ -146,8 +139,8 @@ var getLovecaNeeded = function (user, event) {
       break;
     }
 
-    maxFinalPt = finalUserState.currentPt;
-    if (maxFinalPt >= finalUserState.targetPt) {
+    maxFinalPt = clonedUser.currentPt;
+    if (maxFinalPt >= clonedUser.targetPt) {
       break;
     } else {
       loveca++;

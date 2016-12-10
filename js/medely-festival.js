@@ -232,13 +232,13 @@ function showLovecaNeeded() {
   }
 
   var loveca = getLovecaNeeded(user, medelyFestival);
-  var finalUserState = getFinalUserState(loveca, user, medelyFestival);
+  medelyFestival.run(loveca, user);
 
   var message = "Loveca needed = " + loveca + "\n" +
   "==========\n" +
-  "Final Rank: " + finalUserState.rank + "\n" +
-  "Final Exp = " + finalUserState.exp + "\n"  +
-  "Final Pt = " + finalUserState.currentPt + "\n";
+  "Final Rank: " + user.rank + "\n" +
+  "Final Exp = " + user.exp + "\n"  +
+  "Final Pt = " + user.currentPt + "\n";
 
   window.alert(message);
 }

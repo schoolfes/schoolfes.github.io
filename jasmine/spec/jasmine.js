@@ -53,7 +53,7 @@ $(function() {
         var scoreMatch = new ScoreMatch(Date.now() + weekInMinutes,
         'Hard', 'C', '1st');
 
-        user = getFinalUserState(0, user, scoreMatch);
+        scoreMatch.run(0, user);
 
         expect(user.rank).toBe(159);
         expect(user.exp).toBe(3826);
@@ -66,24 +66,41 @@ $(function() {
 
       it('is correct if taget can be archived', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
+        var clonedUser = user.clone();
+
         var scoreMatch = new ScoreMatch(Date.now() + weekInMinutes,
         'Hard', 'A', '1st');
+        var clonedScoreMatch = scoreMatch.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
         expect(lovecaNeeded).toBe(5);
-        expect(getFinalUserState(lovecaNeeded - 1, user, scoreMatch).currentPt).toBeLessThan(60000 - 1);
-        expect(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt).toBeGreaterThan(60000);
+
+        scoreMatch.run(lovecaNeeded - 1, user);
+        clonedScoreMatch.run(lovecaNeeded, clonedUser);
+
+        expect(user.currentPt).toBeLessThan(60000 - 1);
+        expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
       it('is correct if taget can\'t be archived because of not enough time given', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
+        var clonedUser = user.clone();
+        var anotherClonedUser = user.clone();
+
         var scoreMatch = new ScoreMatch(Date.now() + 1000 * 60 * 60,
         'Hard', 'A', '1st');
+        var clonedScoreMatch = scoreMatch.clone();
+        var anotherClonedScoreMatch = scoreMatch.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
         expect(lovecaNeeded).toBe(3);
-        expect(getFinalUserState(lovecaNeeded - 1, user, scoreMatch).currentPt).not.toBe(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt);
-        expect(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, scoreMatch).currentPt);
+
+        scoreMatch.run(lovecaNeeded - 1, user);
+        clonedScoreMatch.run(lovecaNeeded, clonedUser);
+        anotherClonedScoreMatch.run(lovecaNeeded + 1, anotherClonedUser);
+
+        expect(user.currentPt).not.toBe(clonedUser.currentPt);
+        expect(clonedUser.currentPt).toBe(anotherClonedUser.currentPt);
       });
     });
 
@@ -103,7 +120,7 @@ $(function() {
         'Expert', 3, 'S', 'A',
         true, true);
 
-        user = getFinalUserState(0, user, medelyFestival);
+        medelyFestival.run(0, user);
 
         expect(user.rank).toBe(160);
         expect(user.exp).toBe(1190);
@@ -116,25 +133,39 @@ $(function() {
 
       it('is correct', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
+        var clonedUser = user.clone();
+
         var medelyFestival = new MedelyFestival(Date.now() + weekInMinutes,
         'Expert', 3, 'S', 'A',
         true, true);
+        var clonedMedelyFestival = medelyFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
         expect(lovecaNeeded).toBe(4);
-        expect(getFinalUserState(lovecaNeeded - 1, user, medelyFestival).currentPt).toBeLessThan(60000 - 1);
-        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBeGreaterThan(60000);
+
+        medelyFestival.run(lovecaNeeded - 1, user);
+        clonedMedelyFestival.run(lovecaNeeded, clonedUser);
+
+        expect(user.currentPt).toBeLessThan(60000 - 1);
+        expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
       it('is correct if taget can\'t be archived because of not enough time given', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
+        var clonedUser = user.clone();
+
         var medelyFestival = new MedelyFestival(Date.now() + 1000 * 60 * 1,
         'Expert', 3, 'S', 'A',
         true, true);
+        var clonedMedelyFestival = medelyFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
         expect(lovecaNeeded).toBe(0);
-        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, medelyFestival).currentPt);
+
+        medelyFestival.run(lovecaNeeded, user);
+        clonedMedelyFestival.run(lovecaNeeded + 1, clonedUser);
+
+        expect(user.currentPt).toBe(clonedUser.currentPt);
       });
 
     });
@@ -156,7 +187,7 @@ $(function() {
         1, 0, 0,
         true, true);
 
-        user = getFinalUserState(0, user, challengeFestival);
+        challengeFestival.run(0, user);
 
         expect(user.rank).toBe(159);
         expect(user.exp).toBe(4374);
@@ -169,27 +200,43 @@ $(function() {
 
       it('is correct', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
+        var clonedUser = user.clone();
+
         var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
         'Expert', 3, 'S', 'A',
         1, 0, 0,
         true, true);
+        var clonedChallengeFestival = challengeFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, challengeFestival);
         expect(lovecaNeeded).toBe(4);
-        expect(getFinalUserState(lovecaNeeded - 1, user, challengeFestival).currentPt).toBeLessThan(60000 - 1);
-        expect(getFinalUserState(lovecaNeeded, user, challengeFestival).currentPt).toBeGreaterThan(60000);
+
+        challengeFestival.run(lovecaNeeded - 1, user);
+        clonedChallengeFestival.run(lovecaNeeded, clonedUser);
+
+        expect(user.currentPt).toBeLessThan(60000 - 1);
+        expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
       it('is correct if taget can\'t be archived because of not enough time given', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
+        var clonedUser = user.clone();
+        var anotherClonedUser = user.clone();
+
         var challengeFestival = new ChallengeFestival(Date.now() + 1000 * 60 * 1,
         'Expert', 3, 'S', 'A',
         1, 0, 0,
         true, true);
+        var clonedChallengeFestival = challengeFestival.clone();
+        var anotherClonedChallengeFestival = challengeFestival.clone();
 
         var lovecaNeeded = getLovecaNeeded(user, challengeFestival);
         expect(lovecaNeeded).toBe(0);
-        expect(getFinalUserState(lovecaNeeded, user, challengeFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, challengeFestival).currentPt);
+
+        challengeFestival.run(lovecaNeeded, user);
+        clonedChallengeFestival.run(lovecaNeeded + 1, clonedUser);
+
+        expect(user.currentPt).toBe(clonedUser.currentPt);
       });
 
     });

@@ -166,7 +166,7 @@ function showLovecaNeeded() {
   }
 
   var loveca = getLovecaNeeded(user, scoreMatch);
-  var finalUserState = getFinalUserState(loveca, user, scoreMatch);
+  scoreMatch.run(loveca, user);
 
   if (errorTicket == false) {
     var message = "Loveca needed = " + loveca + "\n" +
