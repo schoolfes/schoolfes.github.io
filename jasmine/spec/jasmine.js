@@ -83,7 +83,7 @@ $(function() {
         var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
         expect(lovecaNeeded).toBe(3);
         expect(getFinalUserState(lovecaNeeded - 1, user, scoreMatch).currentPt).not.toBe(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt);
-        expect(getFinalUserState(lovecaNeeded + 1, user, scoreMatch).currentPt).toBe(getFinalUserState(lovecaNeeded + 2, user, scoreMatch).currentPt);
+        expect(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, scoreMatch).currentPt);
       });
     });
 
