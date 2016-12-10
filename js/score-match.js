@@ -157,7 +157,7 @@ function showLovecaNeeded() {
     var scoreMatch = new ScoreMatch(remainingTime,
     difficulty, expectedScore, expectedRanking);
     // the event should not be ended, or has duration longer then 2 weeks
-    setHasError($endDatetime, !(0 < scoreMatch.remainingTime && scoreMatch.remainingTime <= 60 * 24 * 14));
+    setHasError($endDatetime, !(0 < scoreMatch.remainingTime && scoreMatch.remainingTime <= twoWeeksInMinutes));
 
     if (errorTicket === true) {
       break;

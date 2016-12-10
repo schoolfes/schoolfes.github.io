@@ -156,3 +156,4 @@ function setHasError(inputElement, hasError) {
 
 var momentFormatString = "MM/DD/YYYY HH:mm";
 var twoWeeksInMilliseconds = 1209600000;
+var twoWeeksInMinutes = 60 * 24 * 14;
