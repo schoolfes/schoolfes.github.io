@@ -83,7 +83,7 @@ $(function() {
         var lovecaNeeded = getLovecaNeeded(user, scoreMatch);
         expect(lovecaNeeded).toBe(3);
         expect(getFinalUserState(lovecaNeeded - 1, user, scoreMatch).currentPt).not.toBe(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt);
-        expect(getFinalUserState(lovecaNeeded + 1, user, scoreMatch).currentPt).toBe(getFinalUserState(lovecaNeeded + 2, user, scoreMatch).currentPt);
+        expect(getFinalUserState(lovecaNeeded, user, scoreMatch).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, scoreMatch).currentPt);
       });
     });
 
@@ -128,13 +128,17 @@ $(function() {
 
       it('is correct if taget can\'t be archived because of not enough time given', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
+        var clonedUser = user.clone();
         var medelyFestival = new MedelyFestival(Date.now() + 1000 * 60 * 1,
         'Expert', 3, 'S', 'A',
         true, true);
 
+        medelyFestival.run(lovecaNeeded, user);
+        medelyFestival.run(lovecaNeeded + 1, clonedUser);
+
         var lovecaNeeded = getLovecaNeeded(user, medelyFestival);
         expect(lovecaNeeded).toBe(0);
-        expect(getFinalUserState(lovecaNeeded, user, medelyFestival).currentPt).toBe(getFinalUserState(lovecaNeeded + 1, user, medelyFestival).currentPt);
+        expect(user.currentPt).toBe(clonedUser.currentPt);
       });
 
     });
