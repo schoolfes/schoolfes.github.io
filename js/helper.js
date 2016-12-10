@@ -78,6 +78,10 @@ Event.prototype.getExpGainedPerGame = function () {
   // TODO: error handling
 };
 
+var ScoreMatch = undefined;
+var MedelyFestival = undefined;
+var ChallengeFestival = undefined;
+
 var getFinalUserState = function (loveca, user, event) {
 
   if (event.remainingTimeInMinutes < event.getTimeNeededPerGame() || user.getMaxLP() < event.getLpNeededPerGame()) {
@@ -99,7 +103,7 @@ var getFinalUserState = function (loveca, user, event) {
       user.lp += user.getMaxLP();
     }
 
-    if (event instanceof ChallengeFestival) {
+    if (ChallengeFestival !== undefined && event instanceof ChallengeFestival) {
       event.currentRound++;
       if (event.currentRound > event.numRoundsPerGame) {
         event.currentRound = 1;
@@ -119,7 +123,7 @@ var getFinalUserState = function (loveca, user, event) {
     return getFinalUserState(loveca, user, event);
   } else {
     // we have no time to play one more game
-    if (event instanceof ChallengeFestival) {
+    if (ChallengeFestival !== undefined && event instanceof ChallengeFestival) {
       user.currentPt += event.notRedeemedPt;
       user.exp += event.notRedeemedExp;
     }
