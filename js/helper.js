@@ -74,7 +74,7 @@ Event.prototype.getPtGainedPerGame = function () {
   // TODO: error handling
 };
 
-Event.prototype.getExpGained = function (difficulty) {
+Event.prototype.getExpGained = function () {
   switch (this.difficulty) {
     case "Expert":
     return Event.baseExp[0];
