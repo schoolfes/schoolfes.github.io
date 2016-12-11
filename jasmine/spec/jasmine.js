@@ -6,23 +6,23 @@ $(function() {
 
     describe('Rank Up Exp', function() {
 
-      it('is in range ±2 if cureent rank == 604', function() {
+      it('is in range ±2 (current rank 604)', function() {
         var user = new User(604, 0, 0, 0, 0);
         expect(user.getRankUpExp()).toBeGreaterThanOrEqual(20258 - 2);
         expect(user.getRankUpExp()).toBeLessThanOrEqual(20258 + 2);
       });
 
-      it('is correct if current rank == 158', function() {
+      it('is correct (current rank 158)', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
         expect(user.getRankUpExp()).toBe(4892);
       });
 
-      it('is correct if current rank == 99', function() {
+      it('is correct (current rank 99)', function() {
         var user = new User(99, 0, 0, 0, 0);
         expect(user.getRankUpExp()).toBe(1430);
       });
 
-      it('is correct if current rank == 1', function() {
+      it('is correct (current rank 1)', function() {
         var user = new User(1, 0, 0, 0, 0);
         expect(user.getRankUpExp()).toBe(6);
       });
@@ -33,7 +33,7 @@ $(function() {
 
   describe('Max Lp', function() {
 
-    it('is currect if cureent rank == 158', function() {
+    it('is currect (current rank 158)', function() {
       var user = new User(158, 0, 0, 0, 0);
       expect(user.getMaxLP()).toBe(104);
     });
@@ -48,33 +48,33 @@ $(function() {
 
     describe('Pt Gain', function() {
 
-      it('is correct (normal song: expert level with multiplier 2 )', function() {
+      it('is correct (normal song: expert level, multiplier 2)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Expert', 2, 'Expert', 4);
         expect(tokenEvent.getPtGainedPerNormalSong()).toBe(54);
       });
 
-      it('is correct (normal song: hard level with multiplier 4 )', function() {
+      it('is correct (normal song: hard level, multiplier 4)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 4);
         expect(tokenEvent.getPtGainedPerNormalSong()).toBe(64);
       });
 
-      it('is correct (event song: expert level, score S, combo A, multiplier 1 )', function() {
+      it('is correct (event song: expert level, score S, combo A, multiplier 1)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 1,
         'S', 'A');
         expect(tokenEvent.getPtGainedPerEventSong()).toBe(549);
       });
 
-      it('is correct (event song: hard level, score B, combo B, multiplier 2 )', function() {
+      it('is correct (event song: hard level, score B, combo B, multiplier 2)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Hard', 2,
         'B', 'B');
         expect(tokenEvent.getPtGainedPerEventSong()).toBe(448);
       });
 
-      it('is correct (event song: expert level, score S, combo None, multiplier 3 )', function() {
+      it('is correct (event song: expert level, score S, combo None, multiplier 3)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 3,
         'S', 'None');
@@ -84,33 +84,33 @@ $(function() {
 
     describe('Exp Gain', function() {
 
-      it('is correct (normal song: expert level, multiplier 2 )', function() {
+      it('is correct (normal song: expert level, multiplier 2)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Expert', 2, 'Expert', 4);
         expect(tokenEvent.getExpGainedPerNormalSong()).toBe(166);
       });
 
-      it('is correct (normal song: hard level, multiplier 4 )', function() {
+      it('is correct (normal song: hard level, multiplier 4)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 4);
         expect(tokenEvent.getExpGainedPerNormalSong()).toBe(184);
       });
 
-      it('is correct (event song: expert level, multiplier 1 )', function() {
+      it('is correct (event song: expert level, multiplier 1)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 1,
         'S', 'A');
         expect(tokenEvent.getExpGainedPerEventSong()).toBe(83);
       });
 
-      it('is correct (event song: hard level, multiplier 2 )', function() {
+      it('is correct (event song: hard level, multiplier 2)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Hard', 2,
         'B', 'B');
         expect(tokenEvent.getExpGainedPerEventSong()).toBe(92);
       });
 
-      it('is correct (event song: expert level, multiplier 3 )', function() {
+      it('is correct (event song: expert level, multiplier 3)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
         'Hard', 4, 'Expert', 3,
         'S', 'None');
@@ -143,7 +143,7 @@ $(function() {
 
     describe('Estimated loveca needed', function() {
 
-      it('is correct if taget can be archived', function() {
+      it('is correct (archivable)', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
         var clonedUser = user.clone();
 
@@ -161,7 +161,7 @@ $(function() {
         expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
-      it('is correct if taget can\'t be archived because of not enough time given', function() {
+      it('is correct (not archivable)', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
         var clonedUser = user.clone();
         var anotherClonedUser = user.clone();
@@ -210,7 +210,7 @@ $(function() {
 
     describe('Estimated loveca needed', function() {
 
-      it('is correct', function() {
+      it('is correct (archivable)', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
         var clonedUser = user.clone();
 
@@ -229,7 +229,7 @@ $(function() {
         expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
-      it('is correct if taget can\'t be archived because of not enough time given', function() {
+      it('is correct (not archivable)', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
         var clonedUser = user.clone();
 
@@ -259,7 +259,7 @@ $(function() {
 
     describe('Pt Gain', function() {
 
-      it('is correct with level expert score S combo A at round 4', function() {
+      it('is correct (round 4, expert level, score S, combo A)', function() {
         var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
         'Expert', 4, 'S', 'A',
         4, 0, 0,
@@ -268,7 +268,7 @@ $(function() {
         expect(challengeFestival.getPtGainedPerGame()).toBe(455);
       });
 
-      it('is correct with level easy score C combo B at round 5', function() {
+      it('is correct (round 5, easy level, score C, combo B)', function() {
         var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
         'Easy', 5, 'C', 'B',
         5, 0, 0,
@@ -277,7 +277,7 @@ $(function() {
         expect(challengeFestival.getPtGainedPerGame()).toBe(47);
       });
 
-      it('is correct with level hard score None combo None at round 3', function() {
+      it('is correct (round 4, hard level, score None, combo None)', function() {
         var challengeFestival = new ChallengeFestival(Date.now() + weekInMinutes,
         'Hard', 3, 'None', 'None',
         3, 0, 0,
@@ -307,7 +307,7 @@ $(function() {
 
     describe('Estimated loveca needed', function() {
 
-      it('is correct', function() {
+      it('is correct (archivable)', function() {
         var user = new User(158, 3290, 59, 60000, 20124);
         var clonedUser = user.clone();
 
@@ -327,7 +327,7 @@ $(function() {
         expect(clonedUser.currentPt).toBeGreaterThan(60000);
       });
 
-      it('is correct if taget can\'t be archived because of not enough time given', function() {
+      it('is correct (not archivable)', function() {
         var user = new User(158, 3290, 59, 1000000, 0);
         var clonedUser = user.clone();
         var anotherClonedUser = user.clone();
