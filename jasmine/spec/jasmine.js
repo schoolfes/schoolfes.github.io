@@ -29,13 +29,13 @@ $(function() {
 
     });
 
-  });
+    describe('Max Lp', function() {
 
-  describe('Max Lp', function() {
+      it('is currect (current rank 158)', function() {
+        var user = new User(158, 0, 0, 0, 0);
+        expect(user.getMaxLP()).toBe(104);
+      });
 
-    it('is currect (current rank 158)', function() {
-      var user = new User(158, 0, 0, 0, 0);
-      expect(user.getMaxLP()).toBe(104);
     });
 
   });
