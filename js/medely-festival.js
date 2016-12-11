@@ -147,7 +147,7 @@ MedelyFestival.prototype.getPtGainedPerGame = function () {
 };
 
 MedelyFestival.prototype.getExpGainedPerGame = function () {
-  var baseExp = this.getExpGained(this.difficulty);
+  var baseExp = Event.getExpGainedPerSong(this.difficulty);
   if (this.expUp === true) {
     baseExp *= 1.1;
   }

@@ -74,25 +74,6 @@ Event.prototype.getPtGainedPerGame = function () {
   // TODO: error handling
 };
 
-Event.prototype.getExpGained = function () {
-  switch (this.difficulty) {
-    case "Expert":
-    return Event.baseExp[0];
-    break;
-    case "Hard":
-    return Event.baseExp[1];
-    break;
-    case "Normal":
-    return Event.baseExp[2];
-    break;
-    case "Easy":
-    return Event.baseExp[3];
-    break;
-    default:
-    // TODO: error handling
-  }
-};
-
 Event.prototype.getExpGainedPerGame = function () {
   // TODO: error handling
 };
@@ -139,6 +120,25 @@ Event.prototype.run = function (loveca, user) {
   } else {
     // we have no chance to gain enough lp for a new game
     return;
+  }
+};
+
+Event.getExpGainedPerSong = function (difficulty) {
+  switch (difficulty) {
+    case "Expert":
+    return Event.baseExp[0];
+    break;
+    case "Hard":
+    return Event.baseExp[1];
+    break;
+    case "Normal":
+    return Event.baseExp[2];
+    break;
+    case "Easy":
+    return Event.baseExp[3];
+    break;
+    default:
+    // TODO: error handling
   }
 };
 

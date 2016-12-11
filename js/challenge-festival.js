@@ -167,7 +167,7 @@ ChallengeFestival.prototype.getPtGainedPerGame = function () {
 };
 
 ChallengeFestival.prototype.getExpGainedPerGame = function () {
-  var expGained = this.getExpGained(this.difficulty);
+  var expGained = Event.getExpGainedPerSong(this.difficulty);
   if (this.expUp === true) {
     expGained *= 1.1;
   }

@@ -138,7 +138,7 @@ ScoreMatch.prototype.getPtGainedPerGame = function () {
 };
 
 ScoreMatch.prototype.getExpGainedPerGame = function () {
-  return this.getExpGained(this.difficulty);
+  return Event.getExpGainedPerSong(this.difficulty);
 };
 
 ScoreMatch.basePt = [
