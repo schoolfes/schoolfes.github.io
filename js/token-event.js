@@ -3,41 +3,77 @@ var jpEventEndDateTime = moment("");
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
 var $currentLp = $("#current-lp");
-var $targetPt = $("#target-pt");
-var $currentPt = $("#current-pt");
-var $endDatetime = $("#end-datetime");
-var $difficulty = $("#difficulty");
 
-var $numRoundsPerGame = $("#num-songs");
+var $normalDifficulty = $("#normal-difficulty");
+var $normalMultiper = $("#normal-song-multiplier");
+var $eventDifficulty = $("#event-difficulty");
+var $eventMultiper = $("#event-song-multiplier");
 var $expectedScore = $("#score");
 var $expectedCombo = $("#combo");
-var $useExpUp = $("#exp-up");
-var $usePtUp = $("#pt-up");
 
-var $currentRound = $("#current-round");
-var $notRedeemedExp = $("#not-redeemed-exp");
-var $notRedeemedPt = $("#not-redeemed-pt");
+var $currentToken = $("#current-token");
+var $currentPt = $("#current-pt");
+var $targetPt = $("#target-pt");
+var $endDatetime = $("#end-datetime");
 
 $(function() {
-  // TODO initial UI
+  $(".datetimepicker").datetimepicker({
+    format: momentFormatString,
+    minDate: Date.now(),
+    maxDate: Date.now() + twoWeeksInMilliseconds
+  });
+
+  $("#normal-difficulty-dropdown-menu li a").click(changeNormalDifficulty);
+  $("#normal-song-multiplier-dropdown-menu li a").click(changeNormalMultiper);
+  $("#event-difficulty-dropdown-menu li a").click(changeEventDifficulty);
+  $("#event-song-multiplier-dropdown-menu li a").click(changeEventMultiper);
+  $("#score-dropdown-menu li a").click(changeScore);
+  $("#combo-dropdown-menu li a").click(changeCombo);
+
+  $("#sif-calculate").click(showInput);
+
+  if (jpEventEndDateTime.isValid()) {
+    $endDatetime.val(jpEventEndDateTime.format(momentFormatString));
+  }
 });
 
-function changeDifficulty() {
-  // TODO change difficulty field value
+function changeNormalDifficulty() {
+  $normalDifficulty.text($(this).text());
+}
+
+function changeNormalMultiper() {
+  $normalMultiper.text($(this).text());
+}
+
+function changeEventDifficulty() {
+  $eventDifficulty.text($(this).text());
+}
+
+function changeEventMultiper() {
+  $eventMultiper.text($(this).text());
 }
 
 function changeScore() {
-  // TODO change score field value
+  $expectedScore.text($(this).text());
 }
 
 function changeCombo() {
-  // TODO change combo field value
+  $expectedCombo.text($(this).text());
 }
 
 function showInput() {
-  // TODO get all input from UI, and show our esitimation
+  errorTicket = false;
+  showLovecaNeeded();
 }
 
+var TokenEventUser = function (rank, exp, lp, targetPt, currentPt, currentToken) {
+
+  User.call(this, rank, exp, lp, targetPt, currentPt);
+
+  this.currentToken = currentToken;
+};
+
+TokenEventUser.prototype = Object.create(User.prototype);
 
 var TokenEvent = function (endDatetime,
   normalSongDifficulty, normalSongMultiplier, eventSongDifficulty, eventSongMultiplier,
@@ -200,5 +236,33 @@ TokenEvent.eventSongPt = {
 }
 
 function showLovecaNeeded() {
-  // TODO implement it
+  var currentRank = parseInt($currentRank.val()) || 0;
+  var currentExp = parseInt($currentExp.val()) || 0;
+  var currentLp = parseInt($currentLp.val()) || 0;
+
+  var normalDifficulty = $normalDifficulty.text();
+  var normalMultiper = parseInt($normalMultiper.text()) || 0;
+  var eventDifficulty = $eventDifficulty.text();
+  var eventMultiper = parseInt($eventMultiper.text()) || 0;
+  var expectedScore = $expectedScore.text();
+  var expectedCombo = $expectedCombo.text();
+
+  var currentToken = parseInt($currentToken.val()) || 0;
+  var currentPt = parseInt($currentPt.val()) || 0;
+  var targetPt = parseInt($targetPt.val()) || 0;
+  var endDatetime = $endDatetime.val();
+
+  var user = new TokenEventUser(currentRank, currentExp, currentLp, targetPt, currentPt, currentToken);
+  setHasError($currentRank, (user.rank < 1));
+
+  var tokenEvent = new TokenEvent(Date.parse(endDatetime),
+  normalDifficulty, normalMultiper, eventDifficulty, eventMultiper,
+  expectedScore, expectedCombo);
+  // the event should not be ended, or has duration longer then 2 weeks
+  setHasError($endDatetime, !(0 < tokenEvent.remainingTimeInMinutes && tokenEvent.remainingTimeInMinutes <= twoWeeksInMinutes));
+  if (errorTicket === true) {
+    return;
+  }
+
+  // TODO show loveca needed
 }
