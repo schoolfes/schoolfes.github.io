@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Token Event Helper</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" integrity="sha256-xGyxPu25BXvN4fnXOkrmO/PnXXQQal4uXQ3bbEXLYeg=" crossorigin="anonymous" />
+</head>
+<body class="container">
+  <header class="row">
+    <h1>Token Event Helper</h1>
+  </header>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="current-rank">Current Rank:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="current-rank">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="current-exp">Current Exp:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="current-exp">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="current-lp">Current Lp:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="current-lp">
+      </div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="normal-difficulty">Normal Song Difficulty:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="normal-difficulty">Expert</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="normal-difficulty-dropdown-menu">
+            <li><a role="button">Technical</a></li>
+            <li><a role="button">Expert</a></li>
+            <li><a role="button">Hard</a></li>
+            <li><a role="button">Normal</a></li>
+            <li><a role="button">Easy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="normal-song-multiplier">Normal Song Multiplier:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="normal-song-multiplier">4</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="normal-song-multiplier-dropdown-menu">
+            <li><a role="button">1</a></li>
+            <li><a role="button">2</a></li>
+            <li><a role="button">3</a></li>
+            <li><a role="button">4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="event-difficulty">Event Song Difficulty:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="event-difficulty">Expert</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="event-difficulty-dropdown-menu">
+            <li><a role="button">Technical</a></li>
+            <li><a role="button">Expert</a></li>
+            <li><a role="button">Hard</a></li>
+            <li><a role="button">Normal</a></li>
+            <li><a role="button">Easy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="event-song-multiplier">Event Song Multiplier:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="event-song-multiplier">4</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="event-song-multiplier-dropdown-menu">
+            <li><a role="button">1</a></li>
+            <li><a role="button">2</a></li>
+            <li><a role="button">3</a></li>
+            <li><a role="button">4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="score">Score:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="score">S</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="score-dropdown-menu">
+            <li><a role="button">S</a></li>
+            <li><a role="button">A</a></li>
+            <li><a role="button">B</a></li>
+            <li><a role="button">C</a></li>
+            <li><a role="button">None</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="combo">Combo:</label>
+      <div class="col-sm-10">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="combo">A</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="combo-dropdown-menu">
+            <li><a role="button">S</a></li>
+            <li><a role="button">A</a></li>
+            <li><a role="button">B</a></li>
+            <li><a role="button">C</a></li>
+            <li><a role="button">None</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="current-token">Current Token:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="current-token">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="current-pt">Current Pt:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="current-pt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="target-pt">Target Pt:</label>
+      <div class="col-sm-10">
+        <input type="number" pattern="\d*" class="form-control" id="target-pt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="end-datetime">End Time:</label>
+      <div class="col-sm-10">
+        <div class="input-group date datetimepicker">
+          <input type="text" class="form-control" id="end-datetime">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class="btn btn-default" id="sif-calculate">Calculate</button>
+      </div>
+    </div>
+  </form>
+  <noscript id="deferred-styles">
+    <link href="css/main.css" rel="stylesheet">
+  </noscript>
+  <script>
+    var loadDeferredStyles = function() {
+      var addStylesNode = document.getElementById("deferred-styles");
+      var replacement = document.createElement("div");
+      replacement.innerHTML = addStylesNode.textContent;
+      document.body.appendChild(replacement)
+      addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+  </script>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js" integrity="sha256-De/cgZoAkgvqoxL9yJpJzPHyozUETFnSv7EQGfQWQ4o=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js" integrity="sha256-kIiM3UOTsgRqR7ellGKPpjPN7/z88uz28qIiwk/cVsc=" crossorigin="anonymous"></script>
+  <script src="js/helper.js"></script>
+  <script src="js/token-event.js"></script>
+</body>
+</html>
