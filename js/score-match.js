@@ -73,13 +73,13 @@ ScoreMatch.prototype.getLpNeededPerGame = function () {
   switch (this.difficulty) {
     case "Technical":
     case "Expert":
-    return 25;
+    return Event.lpNeededPerSong[0];
     case "Hard":
-    return 15;
+    return Event.lpNeededPerSong[1];
     case "Normal":
-    return 10;
+    return Event.lpNeededPerSong[2];
     case "Easy":
-    return 5;
+    return Event.lpNeededPerSong[3];
     default:
     // TODO: error handing
   }
@@ -88,28 +88,28 @@ ScoreMatch.prototype.getLpNeededPerGame = function () {
 ScoreMatch.prototype.getScoreBonus = function () {
   switch (this.expectedScore) {
     case "S":
-    return 1.20;
+    return Event.scoreBonus[0];
     case "A":
-    return 1.15;
+    return Event.scoreBonus[1];
     case "B":
-    return 1.10;
+    return Event.scoreBonus[2];
     case "C":
-    return 1.05;
+    return Event.scoreBonus[3];
     default:
-    return 1.00;
+    return Event.scoreBonus[4];
   }
 };
 
 ScoreMatch.prototype.getRankingBonus = function () {
   switch (this.expectedRanking) {
     case "1st":
-    return 1.25;
+    return ScoreMatch.rankingBonus[0];
     case "2nd":
-    return 1.15;
+    return ScoreMatch.rankingBonus[1];
     case "3rd":
-    return 1.05;
+    return ScoreMatch.rankingBonus[2];
     case "4th":
-    return 1.00;
+    return ScoreMatch.rankingBonus[3];
     default:
     // TODO: error handling
   }
@@ -120,16 +120,16 @@ ScoreMatch.prototype.getPtGainedPerGame = function () {
   switch (this.difficulty) {
     case "Technical":
     case "Expert":
-    basePt = 357;
+    basePt = ScoreMatch.basePt[0];
     break;
     case "Hard":
-    basePt = 177;
+    basePt = ScoreMatch.basePt[1];
     break;
     case "Normal":
-    basePt = 100;
+    basePt = ScoreMatch.basePt[2];
     break;
     case "Easy":
-    basePt = 42;
+    basePt = ScoreMatch.basePt[3];
     break;
     default:
     // TODO: error handling
@@ -140,6 +140,14 @@ ScoreMatch.prototype.getPtGainedPerGame = function () {
 ScoreMatch.prototype.getExpGainedPerGame = function () {
   return this.getExpGained(this.difficulty);
 };
+
+ScoreMatch.basePt = [
+  357, 177, 100, 42
+];
+
+ScoreMatch.rankingBonus = [
+  1.25, 1.15, 1.05, 1.00
+];
 
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;

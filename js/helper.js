@@ -55,6 +55,21 @@ Event.prototype.getLpGain = function (time) {
   return time / 6;
 }
 
+Event.prototype.getComboBonus = function () {
+  switch (this.expectedCombo) {
+    case "S":
+    return comboBonus[0];
+    case "A":
+    return comboBonus[1];
+    case "B":
+    return comboBonus[2];
+    case "C":
+    return comboBonus[3];
+    default:
+    return comboBonus[4];
+  }
+};
+
 Event.prototype.getPtGainedPerGame = function () {
   // TODO: error handling
 };
@@ -126,6 +141,18 @@ Event.prototype.run = function (loveca, user) {
     return;
   }
 };
+
+Event.scoreBonus = [
+  1.20, 1.15, 1.10, 1.05, 1.00
+];
+
+Event.comboBonus = [
+  1.08, 1.06, 1.04, 1.02, 1.00
+];
+
+Event.lpNeededPerSong = [
+  25, 15, 10, 5
+];
 
 var getLovecaNeeded = function (user, event) {
   var maxFinalPt = -1;

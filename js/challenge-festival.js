@@ -90,13 +90,13 @@ ChallengeFestival.prototype.getTimeNeededPerGame = function () {
 ChallengeFestival.prototype.getLpNeededPerGame = function () {
   switch (this.difficulty) {
     case "Expert":
-    return 25;
+    return Event.lpNeededPerSong[0];
     case "Hard":
-    return 15;
+    return Event.lpNeededPerSong[1];
     case "Normal":
-    return 10;
+    return Event.lpNeededPerSong[2];
     case "Easy":
-    return 5;
+    return Event.lpNeededPerSong[3];
     default:
     // TODO: error handing
   }
@@ -105,30 +105,30 @@ ChallengeFestival.prototype.getLpNeededPerGame = function () {
 ChallengeFestival.prototype.getScoreBonus = function () {
   switch (this.expectedScore) {
     case "S":
-    return 1.20;
+    return Event.scoreBonus[0];
     case "A":
-    return 1.15;
+    return Event.scoreBonus[1];
     case "B":
-    return 1.10;
+    return Event.scoreBonus[2];
     case "C":
-    return 1.05;
+    return Event.scoreBonus[3];
     default:
-    return 1.00;
+    return Event.scoreBonus[4];
   }
 };
 
 ChallengeFestival.prototype.getComboBonus = function () {
   switch (this.expectedCombo) {
     case "S":
-    return 1.08;
+    return Event.comboBonus[0];
     case "A":
-    return 1.06;
+    return Event.comboBonus[1];
     case "B":
-    return 1.04;
+    return Event.comboBonus[2];
     case "C":
-    return 1.02;
+    return Event.comboBonus[3];
     default:
-    return 1.00;
+    return Event.comboBonus[4];
   }
 };
 
@@ -136,88 +136,16 @@ ChallengeFestival.prototype.getPtGainedPerGame = function () {
   var ptGained = 0;
   switch (this.difficulty) {
     case "Expert":
-    switch (this.currentRound) {
-      case 1:
-      ptGained = 301;
-      break;
-      case 2:
-      ptGained = 320;
-      break;
-      case 3:
-      ptGained = 339;
-      break;
-      case 4:
-      ptGained = 358;
-      break;
-      case 5:
-      ptGained = 377;
-      break;
-      default:
-      // TODO: error handling
-    }
+    ptGained = ChallengeFestival.basePt[0][this.currentRound];
     break;
     case "Hard":
-    switch (this.currentRound) {
-      case 1:
-      ptGained = 158;
-      break;
-      case 2:
-      ptGained = 164;
-      break;
-      case 3:
-      ptGained = 170;
-      break;
-      case 4:
-      ptGained = 176;
-      break;
-      case 5:
-      ptGained = 182;
-      break;
-      default:
-      // TODO: error handling
-    }
+    ptGained = ChallengeFestival.basePt[1][this.currentRound];
     break;
     case "Normal":
-    switch (this.currentRound) {
-      case 1:
-      ptGained = 91;
-      break;
-      case 2:
-      ptGained = 94;
-      break;
-      case 3:
-      ptGained = 97;
-      break;
-      case 4:
-      ptGained = 100;
-      break;
-      case 5:
-      ptGained = 103;
-      break;
-      default:
-      // TODO: error handling
-    }
+    ptGained = ChallengeFestival.basePt[2][this.currentRound];
     break;
     case "Easy":
-    switch (this.currentRound) {
-      case 1:
-      ptGained = 39;
-      break;
-      case 2:
-      ptGained = 40;
-      break;
-      case 3:
-      ptGained = 41;
-      break;
-      case 4:
-      ptGained = 42;
-      break;
-      case 5:
-      ptGained = 43;
-      break;
-      default:
-      // TODO: error handling
-    }
+    ptGained = ChallengeFestival.basePt[3][this.currentRound];
     break;
     default:
     // TODO: error handling
@@ -296,6 +224,13 @@ ChallengeFestival.prototype.run = function (loveca, user) {
     return;
   }
 };
+
+ChallengeFestival.basePt = [
+  [0, 301, 320, 339, 358, 377],
+  [0, 158, 164, 170, 176, 182],
+  [0, 91, 94, 97, 100, 103],
+  [0, 39, 40, 41, 42, 43]
+]
 
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;

@@ -80,13 +80,13 @@ MedelyFestival.prototype.getTimeNeededPerGame = function () {
 MedelyFestival.prototype.getLpNeededPerGame = function () {
   switch (this.difficulty) {
     case "Expert":
-    return 20 * this.numSongsPerLive;
+    return MedelyFestival.lpNeededPerSong[0] * this.numSongsPerLive;
     case "Hard":
-    return 12 * this.numSongsPerLive;
+    return MedelyFestival.lpNeededPerSong[1] * this.numSongsPerLive;
     case "Normal":
-    return 8 * this.numSongsPerLive;
+    return MedelyFestival.lpNeededPerSong[2] * this.numSongsPerLive;
     case "Easy":
-    return 4 * this.numSongsPerLive;
+    return MedelyFestival.lpNeededPerSong[3] * this.numSongsPerLive;
     default:
     // TODO: error handing
   }
@@ -95,30 +95,30 @@ MedelyFestival.prototype.getLpNeededPerGame = function () {
 MedelyFestival.prototype.getScoreBonus = function () {
   switch (this.expectedScore) {
     case "S":
-    return 1.20;
+    return Event.scoreBonus[0];
     case "A":
-    return 1.15;
+    return Event.scoreBonus[1];
     case "B":
-    return 1.10;
+    return Event.scoreBonus[2];
     case "C":
-    return 1.05;
+    return Event.scoreBonus[3];
     default:
-    return 1.00;
+    return Event.scoreBonus[4];
   }
 };
 
 MedelyFestival.prototype.getComboBonus = function () {
   switch (this.expectedCombo) {
     case "S":
-    return 1.08;
+    return Event.comboBonus[0];
     case "A":
-    return 1.06;
+    return Event.comboBonus[1];
     case "B":
-    return 1.04;
+    return Event.comboBonus[2];
     case "C":
-    return 1.02;
+    return Event.comboBonus[3];
     default:
-    return 1.00;
+    return Event.comboBonus[4];
   }
 };
 
@@ -126,64 +126,16 @@ MedelyFestival.prototype.getPtGainedPerGame = function () {
   var basePt = 0;
   switch (this.difficulty) {
     case "Expert":
-    switch (this.numSongsPerLive) {
-      case 1:
-      basePt = 241;
-      break;
-      case 2:
-      basePt = 500;
-      break;
-      case 3:
-      basePt = 777;
-      break;
-      default:
-      // TODO: error handling
-    }
+    basePt = MedelyFestival.basePt[0][this.numSongsPerLive];
     break;
     case "Hard":
-    switch (this.numSongsPerLive) {
-      case 1:
-      basePt = 126;
-      break;
-      case 2:
-      basePt = 262;
-      break;
-      case 3:
-      basePt = 408;
-      break;
-      default:
-      // TODO: error handling
-    }
+    basePt = MedelyFestival.basePt[1][this.numSongsPerLive];
     break;
     case "Normal":
-    switch (this.numSongsPerLive) {
-      case 1:
-      basePt = 72;
-      break;
-      case 2:
-      basePt = 150;
-      break;
-      case 3:
-      basePt = 234;
-      break;
-      default:
-      // TODO: error handling
-    }
+    basePt = MedelyFestival.basePt[2][this.numSongsPerLive];
     break;
     case "Easy":
-    switch (this.numSongsPerLive) {
-      case 1:
-      basePt = 36;
-      break;
-      case 2:
-      basePt = 64;
-      break;
-      case 3:
-      basePt = 99;
-      break;
-      default:
-      // TODO: error handling
-    }
+    basePt = MedelyFestival.basePt[3][this.numSongsPerLive];
     break;
     default:
     // TODO: error handling
@@ -201,6 +153,17 @@ MedelyFestival.prototype.getExpGainedPerGame = function () {
   }
   return Math.round(baseExp * this.numSongsPerLive);
 };
+
+MedelyFestival.basePt = [
+  [0, 241, 500, 777],
+  [0, 126, 262, 408],
+  [0, 72, 150, 234],
+  [0, 36, 64, 99]
+];
+
+MedelyFestival.lpNeededPerSong = [
+  20, 12, 8, 4
+];
 
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;
