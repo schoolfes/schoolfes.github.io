@@ -78,22 +78,6 @@ Event.prototype.getExpGainedPerGame = function () {
   // TODO: error handling
 };
 
-Event.prototype.play = function (user) {
-  this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
-  user.lp -= this.getLpNeededPerGame();
-  user.lp += this.getLpGain(this.getTimeNeededPerGame());
-  user.currentPt += this.getPtGainedPerGame();
-  user.exp += this.getExpGainedPerGame();
-
-  if (user.exp >= user.getRankUpExp()) {
-    // Rank up!
-    user.exp -= user.getRankUpExp();
-    user.rank += 1;
-    // lpAdded += user.getMaxLP();
-    user.lp += user.getMaxLP();
-  }
-};
-
 Event.prototype.run = function (loveca, user) {
   if (this.remainingTimeInMinutes < this.getTimeNeededPerGame() || user.getMaxLP() < this.getLpNeededPerGame()) {
     // Have no more time for a game
@@ -102,7 +86,19 @@ Event.prototype.run = function (loveca, user) {
 
   if (user.lp >= this.getLpNeededPerGame()) {
     // Have a game
-    this.play(user);
+    this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
+    user.lp -= this.getLpNeededPerGame();
+    user.lp += this.getLpGain(this.getTimeNeededPerGame());
+    user.currentPt += this.getPtGainedPerGame();
+    user.exp += this.getExpGainedPerGame();
+
+    if (user.exp >= user.getRankUpExp()) {
+      // Rank up!
+      user.exp -= user.getRankUpExp();
+      user.rank += 1;
+      // lpAdded += user.getMaxLP();
+      user.lp += user.getMaxLP();
+    }
 
     return this.run(loveca, user);
   } else if (loveca > 0) {

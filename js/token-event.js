@@ -190,12 +190,6 @@ TokenEvent.prototype.getExpGainedPerNormalSong = function () {
   return Event.getExpGainedPerSong(this.normalSongDifficulty) * this.normalSongMultiplier;
 };
 
-TokenEvent.prototype.play = function (user) {
-  Event.prototype.play.call(this, user);
-
-  // TODO we can play a sone with lp or token, so we need to override this method
-};
-
 TokenEvent.prototype.run = function (loveca, user) {
   Event.prototype.run.call(this, loveca, user);
 
@@ -266,5 +260,16 @@ function showLovecaNeeded() {
     return;
   }
 
-  // TODO show loveca needed
+  var loveca = getLovecaNeeded(user, scoreMatch);
+  scoreMatch.run(loveca, user);
+
+  if (errorTicket == false) {
+    var message = "Loveca needed = " + loveca + "\n" +
+    "==========\n" +
+    "Final Rank: " + user.rank + "\n" +
+    "Final Exp = " + user.exp + "\n"  +
+    "Final Pt = " + user.currentPt + "\n";
+
+    window.alert(message);
+  }
 }

@@ -182,15 +182,6 @@ ChallengeFestival.prototype.getExpGainedPerGame = function () {
   }
 };
 
-ChallengeFestival.prototype.play = function (user) {
-  Event.prototype.play.call(this, user);
-
-  this.currentRound++;
-  if (this.currentRound > this.numRoundsPerGame) {
-    this.currentRound = 1;
-  }
-};
-
 ChallengeFestival.prototype.run = function (loveca, user) {
   if (this.remainingTimeInMinutes < this.getTimeNeededPerGame() || user.getMaxLP() < this.getLpNeededPerGame()) {
     // Have no more time for a game
@@ -202,7 +193,24 @@ ChallengeFestival.prototype.run = function (loveca, user) {
 
   if (user.lp >= this.getLpNeededPerGame()) {
     // Have a game
-    this.play(user);
+    this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
+    user.lp -= this.getLpNeededPerGame();
+    user.lp += this.getLpGain(this.getTimeNeededPerGame());
+    user.currentPt += this.getPtGainedPerGame();
+    user.exp += this.getExpGainedPerGame();
+
+    if (user.exp >= user.getRankUpExp()) {
+      // Rank up!
+      user.exp -= user.getRankUpExp();
+      user.rank += 1;
+      // lpAdded += user.getMaxLP();
+      user.lp += user.getMaxLP();
+    }
+
+    this.currentRound++;
+    if (this.currentRound > this.numRoundsPerGame) {
+      this.currentRound = 1;
+    }
 
     return this.run(loveca, user);
   } else if (loveca > 0) {
