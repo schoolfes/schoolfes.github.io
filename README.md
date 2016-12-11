@@ -1,4 +1,4 @@
-# School Idol Festival Helper
+# School Idol Festival Calculater
 
 [ラブライブ！スクールアイドルフェスティバル](https://lovelive.bushimo.jp/) is a rhythm game developed by KLab.
 
@@ -10,7 +10,7 @@ Player will be given members if his event point reaches certain levels. Event po
 
 Player can convert loveca to lp. In order to know the exact number of loveca needed, but the calculation can be complicted.
 
-[School Idol Festival Helper](https://github.com/schoolfes/schoolfes.github.io) is a calculator that calculate the loveca needs to be spent for the target point.
+[School Idol Festival Calculater](https://github.com/schoolfes/schoolfes.github.io) is a calculator that calculate the loveca needs to be spent for the target point.
 
 ## How to use
 
