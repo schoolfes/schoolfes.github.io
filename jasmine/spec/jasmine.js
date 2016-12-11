@@ -119,6 +119,45 @@ $(function() {
         expect(tokenEvent.getExpGainedPerEventSong()).toBe(249);
       });
     });
+
+    describe('User statue at the end', function() {
+
+      it('is correct', function() {
+        var user = new TokenEventUser(100, 0, 0, 0, 0, 0);
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes / 7 * 2,
+        'Expert', 1, 'Expert', 4,
+        'S', 'S');
+
+        tokenEvent.run(0, user);
+
+        expect(user.rank).toBe(100);
+        expect(user.exp).toBe(1909);
+        expect(user.currentPt).toBe(2773);
+      });
+
+    });
+
+    describe('Estimated loveca needed', function() {
+
+      it('is correct', function() {
+        var user = new TokenEventUser(100, 0, 0, 60000, 0, 0);
+        var clonedUser = user.clone();
+
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Expert', 1, 'Expert', 4,
+        'S', 'S');
+        var clonedTokenEvent = tokenEvent.clone();
+
+        var lovecaNeeded = getLovecaNeeded(user, tokenEvent);
+        expect(lovecaNeeded).toBe(57);
+
+        tokenEvent.run(lovecaNeeded - 1, user);
+        clonedTokenEvent.run(lovecaNeeded, clonedUser);
+
+        expect(user.currentPt).toBeLessThan(60000 - 1);
+        expect(clonedUser.currentPt).toBeGreaterThan(60000);
+      });
+    });
   });
 
   describe('Score Match', function() {

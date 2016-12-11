@@ -75,6 +75,10 @@ var TokenEventUser = function (rank, exp, lp, targetPt, currentPt, currentToken)
 
 TokenEventUser.prototype = Object.create(User.prototype);
 
+TokenEventUser.prototype.clone = function () {
+  return new TokenEventUser(this.rank, this.exp, this.lp, this.targetPt, this.currentPt, this.currentToken);
+};
+
 var TokenEvent = function (endDatetime,
   normalSongDifficulty, normalSongMultiplier, eventSongDifficulty, eventSongMultiplier,
   expectedScore, expectedCombo) {
@@ -112,6 +116,22 @@ TokenEvent.prototype.getLpNeededPerNormalSong = function () {
     return Event.lpNeededPerSong[2] * this.normalSongMultiplier;
     case "Easy":
     return Event.lpNeededPerSong[3] * this.normalSongMultiplier;
+    default:
+    // TODO: error handing
+  }
+};
+
+TokenEvent.prototype.getTokenNeededPerEventSong = function () {
+  switch (this.normalSongDifficulty) {
+    case "Master":
+    case "Expert":
+    return TokenEvent.tokenNeededPerSong[0] * this.eventSongMultiplier;
+    case "Hard":
+    return TokenEvent.tokenNeededPerSong[1] * this.eventSongMultiplier;
+    case "Normal":
+    return TokenEvent.tokenNeededPerSong[2] * this.eventSongMultiplier;
+    case "Easy":
+    return TokenEvent.tokenNeededPerSong[3] * this.eventSongMultiplier;
     default:
     // TODO: error handing
   }
@@ -186,17 +206,99 @@ TokenEvent.prototype.getPtGainedPerNormalSong = function () {
   return Math.round(ptGained * this.normalSongMultiplier);
 };
 
+TokenEvent.prototype.getTokenGainedPerNormalSong = function () {
+  var tokenGained = 0;
+  switch (this.normalSongDifficulty) {
+    case "Master":
+    case "Expert":
+    tokenGained = TokenEvent.normalSongToken[0];
+    break;
+    case "Hard":
+    tokenGained = TokenEvent.normalSongToken[1];
+    break;
+    case "Normal":
+    tokenGained = TokenEvent.normalSongToken[2];
+    break;
+    case "Easy":
+    tokenGained = TokenEvent.normalSongToken[3];
+    break;
+    default:
+    // TODO: error handling
+  }
+
+  return Math.round(tokenGained * this.normalSongMultiplier);
+};
+
 TokenEvent.prototype.getExpGainedPerNormalSong = function () {
   return Event.getExpGainedPerSong(this.normalSongDifficulty) * this.normalSongMultiplier;
 };
 
 TokenEvent.prototype.run = function (loveca, user) {
-  Event.prototype.run.call(this, loveca, user);
 
-  // TODO we can play a sone with lp or token, so we need to override this method
+  if (this.remainingTimeInMinutes < this.getTimeNeededPerGame() ||
+  (user.getMaxLP() < this.getLpNeededPerNormalSong() &&
+  user.currentToken < this.getTokenNeededPerEventSong())) {
+    // Have no more time for a game
+    return;
+  }
+
+  if (user.lp >= this.getLpNeededPerNormalSong()) {
+    // Have enough lp to play a normal song
+    this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
+    user.lp -= this.getLpNeededPerNormalSong();
+    user.lp += this.getLpGain(this.getTimeNeededPerGame());
+    user.currentPt += this.getPtGainedPerNormalSong();
+    user.currentToken += this.getTokenGainedPerNormalSong();
+    user.exp += this.getExpGainedPerNormalSong();
+
+    if (user.exp >= user.getRankUpExp()) {
+      // Rank up!
+      user.exp -= user.getRankUpExp();
+      user.rank += 1;
+      // lpAdded += user.getMaxLP();
+      user.lp += user.getMaxLP();
+    }
+
+    return this.run(loveca, user);
+  } else if (user.currentToken > this.getTokenNeededPerEventSong()) {
+    // Have enough lp to play a event song
+    this.remainingTimeInMinutes -= this.getTimeNeededPerGame();
+    user.currentToken -= this.getTokenNeededPerEventSong();
+    user.lp += this.getLpGain(this.getTimeNeededPerGame());
+    user.currentPt += this.getPtGainedPerEventSong();
+    user.exp += this.getExpGainedPerEventSong();
+
+    if (user.exp >= user.getRankUpExp()) {
+      // Rank up!
+      user.exp -= user.getRankUpExp();
+      user.rank += 1;
+      // lpAdded += user.getMaxLP();
+      user.lp += user.getMaxLP();
+    }
+
+    return this.run(loveca, user);
+  } else if (loveca > 0) {
+    // Spend a loveca
+    user.lp += user.getMaxLP();
+    loveca -= 1;
+    return this.run(loveca, user);
+  } else if (this.remainingTimeInMinutes >= getRecoveryTime(this.getLpNeededPerNormalSong() - user.lp)) {
+    // Wait for lp recovery
+    var recoveryTime = getRecoveryTime(this.getLpNeededPerNormalSong() - user.lp)
+    this.remainingTimeInMinutes -= recoveryTime;
+    user.lp += this.getLpGain(recoveryTime);
+    return this.run(loveca, user);
+  } else {
+    // we have no chance to gain enough lp for a new game
+    return;
+  }
 };
 
 TokenEvent.normalSongPt = [
+  27, 16, 10, 5
+]
+
+TokenEvent.normalSongToken = [
   27, 16, 10, 5
 ]
 
@@ -231,6 +333,10 @@ TokenEvent.eventSongPt = {
   ]
 }
 
+TokenEvent.tokenNeededPerSong = [
+  75, 45, 30, 15
+];
+
 function showLovecaNeeded() {
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
@@ -260,15 +366,16 @@ function showLovecaNeeded() {
     return;
   }
 
-  var loveca = getLovecaNeeded(user, scoreMatch);
-  scoreMatch.run(loveca, user);
+  var loveca = getLovecaNeeded(user, tokenEvent);
+  tokenEvent.run(loveca, user);
 
   if (errorTicket == false) {
     var message = "Loveca needed = " + loveca + "\n" +
     "==========\n" +
     "Final Rank: " + user.rank + "\n" +
     "Final Exp = " + user.exp + "\n"  +
-    "Final Pt = " + user.currentPt + "\n";
+    "Final Pt = " + user.currentPt + "\n" +
+    "Final Token = " + user.currentToken + "\n";
 
     window.alert(message);
   }
