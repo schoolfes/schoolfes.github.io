@@ -77,16 +77,16 @@ Event.prototype.getPtGainedPerGame = function () {
 Event.prototype.getExpGained = function (difficulty) {
   switch (this.difficulty) {
     case "Expert":
-    return 83;
+    return Event.baseExp[0];
     break;
     case "Hard":
-    return 46;
+    return Event.baseExp[1];
     break;
     case "Normal":
-    return 26;
+    return Event.baseExp[2];
     break;
     case "Easy":
-    return 12;
+    return Event.baseExp[3];
     break;
     default:
     // TODO: error handling
@@ -153,6 +153,10 @@ Event.comboBonus = [
 Event.lpNeededPerSong = [
   25, 15, 10, 5
 ];
+
+Event.baseExp = [
+  83, 46, 26, 12
+]
 
 var getLovecaNeeded = function (user, event) {
   var maxFinalPt = -1;
