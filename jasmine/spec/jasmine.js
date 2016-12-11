@@ -40,6 +40,85 @@ $(function() {
 
   });
 
+  describe('Token Event', function() {
+
+    it('is defined', function() {
+      expect(TokenEvent).toBeDefined();
+    });
+
+    describe('Pt Gain', function() {
+
+      it('is correct (normal song: expert level with multiplier 2 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Expert', 2, 'Expert', 4);
+        expect(tokenEvent.getPtGainedPerNormalSong()).toBe(54);
+      });
+
+      it('is correct (normal song: hard level with multiplier 4 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 4);
+        expect(tokenEvent.getPtGainedPerNormalSong()).toBe(64);
+      });
+
+      it('is correct (event song: expert level, score S, combo A, multiplier 1 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 1,
+        'S', 'A');
+        expect(tokenEvent.getPtGainedPerEventSong()).toBe(549);
+      });
+
+      it('is correct (event song: hard level, score B, combo B, multiplier 2 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Hard', 2,
+        'B', 'B');
+        expect(tokenEvent.getPtGainedPerEventSong()).toBe(448);
+      });
+
+      it('is correct (event song: expert level, score S, combo None, multiplier 3 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 3,
+        'S', 'None');
+        expect(tokenEvent.getPtGainedPerEventSong()).toBe(1494);
+      });
+    });
+
+    describe('Exp Gain', function() {
+
+      it('is correct (normal song: expert level, multiplier 2 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Expert', 2, 'Expert', 4);
+        expect(tokenEvent.getExpGainedPerNormalSong()).toBe(166);
+      });
+
+      it('is correct (normal song: hard level, multiplier 4 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 4);
+        expect(tokenEvent.getExpGainedPerNormalSong()).toBe(184);
+      });
+
+      it('is correct (event song: expert level, multiplier 1 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 1,
+        'S', 'A');
+        expect(tokenEvent.getExpGainedPerEventSong()).toBe(83);
+      });
+
+      it('is correct (event song: hard level, multiplier 2 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Hard', 2,
+        'B', 'B');
+        expect(tokenEvent.getExpGainedPerEventSong()).toBe(92);
+      });
+
+      it('is correct (event song: expert level, multiplier 3 )', function() {
+        var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
+        'Hard', 4, 'Expert', 3,
+        'S', 'None');
+        expect(tokenEvent.getExpGainedPerEventSong()).toBe(249);
+      });
+    });
+  });
+
   describe('Score Match', function() {
 
     it('is defined', function() {
