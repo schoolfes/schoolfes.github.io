@@ -103,6 +103,7 @@ TokenEvent.prototype.getTimeNeededPerGame = function () {
 
 TokenEvent.prototype.getLpNeededPerNormalSong = function () {
   switch (this.normalSongDifficulty) {
+    case "Master":
     case "Expert":
     return Event.lpNeededPerSong[0] * this.normalSongMultiplier;
     case "Hard":
@@ -165,6 +166,7 @@ TokenEvent.prototype.getExpGainedPerEventSong = function () {
 TokenEvent.prototype.getPtGainedPerNormalSong = function () {
   var ptGained = 0;
   switch (this.normalSongDifficulty) {
+    case "Master":
     case "Expert":
     ptGained = TokenEvent.normalSongPt[0];
     break;
