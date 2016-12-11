@@ -86,13 +86,15 @@ $(function() {
 
       it('is correct (normal song: expert level, multiplier 2)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
-        'Expert', 2, 'Expert', 4);
+        'Expert', 2, 'Expert', 4,
+        'S', 'S');
         expect(tokenEvent.getExpGainedPerNormalSong()).toBe(166);
       });
 
       it('is correct (normal song: hard level, multiplier 4)', function() {
         var tokenEvent = new TokenEvent(Date.now() + weekInMinutes,
-        'Hard', 4, 'Expert', 4);
+        'Hard', 4, 'Expert', 4,
+        'S', 'S');
         expect(tokenEvent.getExpGainedPerNormalSong()).toBe(184);
       });
 
