@@ -3,16 +3,14 @@ var jpEventEndDateTime = moment("12/15/2016 03:00 PM GMT+0900");
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
 var $currentLp = $("#current-lp");
-var $targetPt = $("#target-pt");
-var $currentPt = $("#current-pt");
-var $endDatetime = $("#end-datetime");
-var $difficulty = $("#difficulty");
+
 var $numSongsPerGame = $("#num-songs");
-var $expectedScore = $("#score");
-var $expectedCombo = $("#combo");
 var $useExpUp = $("#exp-up");
 var $usePtUp = $("#pt-up");
 
+var $currentPt = $("#current-pt");
+var $targetPt = $("#target-pt");
+var $endDatetime = $("#end-datetime");
 
 $(function() {
   $(".datetimepicker").datetimepicker({
@@ -78,68 +76,20 @@ MedelyFestival.prototype.getTimeNeededPerGame = function () {
 };
 
 MedelyFestival.prototype.getLpNeededPerGame = function () {
-  switch (this.difficulty) {
-    case "Expert":
-    return MedelyFestival.lpNeededPerSong[0] * this.numSongsPerLive;
-    case "Hard":
-    return MedelyFestival.lpNeededPerSong[1] * this.numSongsPerLive;
-    case "Normal":
-    return MedelyFestival.lpNeededPerSong[2] * this.numSongsPerLive;
-    case "Easy":
-    return MedelyFestival.lpNeededPerSong[3] * this.numSongsPerLive;
-    default:
-    // TODO: error handing
-  }
+  return MedelyFestival.lpNeededPerSong[this.difficulty] * this.numSongsPerLive;
 };
 
 MedelyFestival.prototype.getScoreBonus = function () {
-  switch (this.expectedScore) {
-    case "S":
-    return Event.scoreBonus[0];
-    case "A":
-    return Event.scoreBonus[1];
-    case "B":
-    return Event.scoreBonus[2];
-    case "C":
-    return Event.scoreBonus[3];
-    default:
-    return Event.scoreBonus[4];
-  }
+  return Event.scoreBonus[this.expectedScore];
 };
 
 MedelyFestival.prototype.getComboBonus = function () {
-  switch (this.expectedCombo) {
-    case "S":
-    return Event.comboBonus[0];
-    case "A":
-    return Event.comboBonus[1];
-    case "B":
-    return Event.comboBonus[2];
-    case "C":
-    return Event.comboBonus[3];
-    default:
-    return Event.comboBonus[4];
-  }
+  return Event.comboBonus[this.expectedCombo];
 };
 
 MedelyFestival.prototype.getPtGainedPerGame = function () {
-  var basePt = 0;
-  switch (this.difficulty) {
-    case "Expert":
-    basePt = MedelyFestival.basePt[0][this.numSongsPerLive];
-    break;
-    case "Hard":
-    basePt = MedelyFestival.basePt[1][this.numSongsPerLive];
-    break;
-    case "Normal":
-    basePt = MedelyFestival.basePt[2][this.numSongsPerLive];
-    break;
-    case "Easy":
-    basePt = MedelyFestival.basePt[3][this.numSongsPerLive];
-    break;
-    default:
-    // TODO: error handling
-  }
+  var basePt = MedelyFestival.basePt[this.difficulty][this.numSongsPerLive];
+
   if (this.usePtUp === true) {
     basePt *= 1.1;
   }
@@ -166,19 +116,24 @@ MedelyFestival.lpNeededPerSong = [
 ];
 
 function showLovecaNeeded() {
+  var $difficulty = $($("#difficulty option:selected")[0]);
+  var $expectedScore = $($("#score option:selected")[0]);
+  var $expectedCombo = $($("#combo option:selected")[0]);
+
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
   var currentLp = parseInt($currentLp.val()) || 0;
-  var targetPt = parseInt($targetPt.val()) || 0;
-  var currentPt = parseInt($currentPt.val()) || 0;
 
-  var endDatetime = $endDatetime.val();
-  var difficulty = $difficulty.text();
+  var difficulty = parseInt($difficulty.val());
   var numSongsPerLive = parseInt($numSongsPerGame.val()) || 0;
-  var expectedScore = $expectedScore.text();
-  var expectedCombo = $expectedCombo.text();
+  var expectedScore = parseInt($expectedScore.val());
+  var expectedCombo = parseInt($expectedCombo.val());
   var useExpUp = $useExpUp.is(":checked");
   var usePtUp = $usePtUp.is(":checked");
+
+  var currentPt = parseInt($currentPt.val()) || 0;
+  var targetPt = parseInt($targetPt.val()) || 0;
+  var endDatetime = $endDatetime.val();
 
   var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
   setHasError($currentRank, (user.rank < 1));

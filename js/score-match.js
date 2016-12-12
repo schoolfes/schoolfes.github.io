@@ -3,13 +3,10 @@ var jpEventEndDateTime = moment("");
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
 var $currentLp = $("#current-lp");
-var $targetPt = $("#target-pt");
-var $currentPt = $("#current-pt");
-var $endDatetime = $("#end-datetime");
-var $difficulty = $("#difficulty");
-var $expectedScore = $("#score");
-var $expectedRanking = $("#ranking");
 
+var $currentPt = $("#current-pt");
+var $targetPt = $("#target-pt");
+var $endDatetime = $("#end-datetime");
 
 $(function() {
   $(".datetimepicker").datetimepicker({
@@ -70,70 +67,19 @@ ScoreMatch.prototype.getTimeNeededPerGame = function () {
 };
 
 ScoreMatch.prototype.getLpNeededPerGame = function () {
-  switch (this.difficulty) {
-    case "Technical":
-    case "Expert":
-    return Event.lpNeededPerSong[0];
-    case "Hard":
-    return Event.lpNeededPerSong[1];
-    case "Normal":
-    return Event.lpNeededPerSong[2];
-    case "Easy":
-    return Event.lpNeededPerSong[3];
-    default:
-    // TODO: error handing
-  }
+  return Event.lpNeededPerSong[this.difficulty];
 };
 
 ScoreMatch.prototype.getScoreBonus = function () {
-  switch (this.expectedScore) {
-    case "S":
-    return Event.scoreBonus[0];
-    case "A":
-    return Event.scoreBonus[1];
-    case "B":
-    return Event.scoreBonus[2];
-    case "C":
-    return Event.scoreBonus[3];
-    default:
-    return Event.scoreBonus[4];
-  }
+  return Event.scoreBonus[this.expectedScore];
 };
 
 ScoreMatch.prototype.getRankingBonus = function () {
-  switch (this.expectedRanking) {
-    case "1st":
-    return ScoreMatch.rankingBonus[0];
-    case "2nd":
-    return ScoreMatch.rankingBonus[1];
-    case "3rd":
-    return ScoreMatch.rankingBonus[2];
-    case "4th":
-    return ScoreMatch.rankingBonus[3];
-    default:
-    // TODO: error handling
-  }
+  return ScoreMatch.rankingBonus[this.expectedRanking];
 };
 
 ScoreMatch.prototype.getPtGainedPerGame = function () {
-  var basePt = 0;
-  switch (this.difficulty) {
-    case "Technical":
-    case "Expert":
-    basePt = ScoreMatch.basePt[0];
-    break;
-    case "Hard":
-    basePt = ScoreMatch.basePt[1];
-    break;
-    case "Normal":
-    basePt = ScoreMatch.basePt[2];
-    break;
-    case "Easy":
-    basePt = ScoreMatch.basePt[3];
-    break;
-    default:
-    // TODO: error handling
-  }
+  var basePt = ScoreMatch.basePt[this.difficulty];
   return Math.round(basePt * this.getScoreBonus() * this.getRankingBonus());
 };
 
@@ -150,16 +96,21 @@ ScoreMatch.rankingBonus = [
 ];
 
 function showLovecaNeeded() {
+  var $difficulty = $($("#difficulty option:selected")[0]);
+  var $expectedScore = $($("#score option:selected")[0]);
+  var $expectedRanking = $($("#ranking option:selected")[0]);
+
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
   var currentLp = parseInt($currentLp.val()) || 0;
-  var targetPt = parseInt($targetPt.val()) || 0;
-  var currentPt = parseInt($currentPt.val()) || 0;
 
+  var difficulty = parseInt($difficulty.val());
+  var expectedScore = parseInt($expectedScore.val());
+  var expectedRanking = parseInt($expectedRanking.val());
+
+  var currentPt = parseInt($currentPt.val()) || 0;
+  var targetPt = parseInt($targetPt.val()) || 0;
   var endDatetime = $endDatetime.val();
-  var difficulty = $difficulty.text();
-  var expectedScore = $expectedScore.text();
-  var expectedRanking = $expectedRanking.text();
 
   var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
   setHasError($currentRank, (user.rank < 1));

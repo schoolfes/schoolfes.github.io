@@ -120,22 +120,7 @@ Event.prototype.run = function (loveca, user) {
 };
 
 Event.getExpGainedPerSong = function (difficulty) {
-  switch (difficulty) {
-    case "Expert":
-    return Event.baseExp[0];
-    break;
-    case "Hard":
-    return Event.baseExp[1];
-    break;
-    case "Normal":
-    return Event.baseExp[2];
-    break;
-    case "Easy":
-    return Event.baseExp[3];
-    break;
-    default:
-    // TODO: error handling
-  }
+  return Event.baseExp[difficulty];
 };
 
 Event.scoreBonus = [

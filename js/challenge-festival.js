@@ -3,20 +3,17 @@ var jpEventEndDateTime = moment("");
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
 var $currentLp = $("#current-lp");
-var $targetPt = $("#target-pt");
-var $currentPt = $("#current-pt");
-var $endDatetime = $("#end-datetime");
-var $difficulty = $("#difficulty");
 
 var $numRoundsPerGame = $("#num-songs");
-var $expectedScore = $("#score");
-var $expectedCombo = $("#combo");
 var $useExpUp = $("#exp-up");
 var $usePtUp = $("#pt-up");
 
 var $currentRound = $("#current-round");
-var $notRedeemedExp = $("#not-redeemed-exp");
 var $notRedeemedPt = $("#not-redeemed-pt");
+var $notRedeemedExp = $("#not-redeemed-exp");
+var $currentPt = $("#current-pt");
+var $targetPt = $("#target-pt");
+var $endDatetime = $("#end-datetime");
 
 $(function() {
   $(".datetimepicker").datetimepicker({
@@ -88,68 +85,20 @@ ChallengeFestival.prototype.getTimeNeededPerGame = function () {
 };
 
 ChallengeFestival.prototype.getLpNeededPerGame = function () {
-  switch (this.difficulty) {
-    case "Expert":
-    return Event.lpNeededPerSong[0];
-    case "Hard":
-    return Event.lpNeededPerSong[1];
-    case "Normal":
-    return Event.lpNeededPerSong[2];
-    case "Easy":
-    return Event.lpNeededPerSong[3];
-    default:
-    // TODO: error handing
-  }
+  return Event.lpNeededPerSong[this.difficulty];
 };
 
 ChallengeFestival.prototype.getScoreBonus = function () {
-  switch (this.expectedScore) {
-    case "S":
-    return Event.scoreBonus[0];
-    case "A":
-    return Event.scoreBonus[1];
-    case "B":
-    return Event.scoreBonus[2];
-    case "C":
-    return Event.scoreBonus[3];
-    default:
-    return Event.scoreBonus[4];
-  }
+  return Event.scoreBonus[this.expectedScore];
 };
 
 ChallengeFestival.prototype.getComboBonus = function () {
-  switch (this.expectedCombo) {
-    case "S":
-    return Event.comboBonus[0];
-    case "A":
-    return Event.comboBonus[1];
-    case "B":
-    return Event.comboBonus[2];
-    case "C":
-    return Event.comboBonus[3];
-    default:
-    return Event.comboBonus[4];
-  }
+  return Event.comboBonus[this.expectedCombo];
 };
 
 ChallengeFestival.prototype.getPtGainedPerGame = function () {
-  var ptGained = 0;
-  switch (this.difficulty) {
-    case "Expert":
-    ptGained = ChallengeFestival.basePt[0][this.currentRound];
-    break;
-    case "Hard":
-    ptGained = ChallengeFestival.basePt[1][this.currentRound];
-    break;
-    case "Normal":
-    ptGained = ChallengeFestival.basePt[2][this.currentRound];
-    break;
-    case "Easy":
-    ptGained = ChallengeFestival.basePt[3][this.currentRound];
-    break;
-    default:
-    // TODO: error handling
-  }
+  var ptGained = ChallengeFestival.basePt[this.difficulty][this.currentRound];
+
   if (this.usePtUp === true) {
     ptGained *= 1.1;
   }
@@ -241,22 +190,27 @@ ChallengeFestival.basePt = [
 ]
 
 function showLovecaNeeded() {
+  var $difficulty = $($("#difficulty option:selected")[0]);
+  var $expectedScore = $($("#score option:selected")[0]);
+  var $expectedCombo = $($("#combo option:selected")[0]);
+
   var currentRank = parseInt($currentRank.val()) || 0;
   var currentExp = parseInt($currentExp.val()) || 0;
   var currentLp = parseInt($currentLp.val()) || 0;
-  var targetPt = parseInt($targetPt.val()) || 0;
-  var currentPt = parseInt($currentPt.val()) || 0;
 
-  var endDatetime = $endDatetime.val();
-  var difficulty = $difficulty.text();
+  var difficulty = parseInt($difficulty.val());
   var numRoundsPerGame = parseInt($numRoundsPerGame.val()) || 0;
-  var expectedScore = $expectedScore.text();
-  var expectedCombo = $expectedCombo.text();
+  var expectedScore = parseInt($expectedScore.val());
+  var expectedCombo = parseInt($expectedCombo.val());
+  var useExpUp = $useExpUp.is(":checked");
+  var usePtUp = $usePtUp.is(":checked");
+
   var currentRound = parseInt($currentRound.val()) || 1;
   var notRedeemedPt = parseInt($notRedeemedPt.val()) || 0;
   var notRedeemedExp = parseInt($notRedeemedExp.val()) || 0;
-  var useExpUp = $useExpUp.is(":checked");
-  var usePtUp = $usePtUp.is(":checked");
+  var currentPt = parseInt($currentPt.val()) || 0;
+  var targetPt = parseInt($targetPt.val()) || 0;
+  var endDatetime = $endDatetime.val();
 
   var user = new User(currentRank, currentExp, currentLp, targetPt, currentPt);
   setHasError($currentRank, (user.rank < 1));

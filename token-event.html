@@ -36,112 +36,70 @@
     <div class="form-group">
       <label class="control-label col-sm-2" for="normal-difficulty">Normal Song Difficulty:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="normal-difficulty">Expert</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="normal-difficulty-dropdown-menu">
-            <li><a role="button">Master</a></li>
-            <li><a role="button">Expert</a></li>
-            <li><a role="button">Hard</a></li>
-            <li><a role="button">Normal</a></li>
-            <li><a role="button">Easy</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="normal-difficulty">
+          <option value="0">Master</option>
+          <option value="0" selected>Expert</option>
+          <option value="1">Hard</option>
+          <option value="2">Normal</option>
+          <option value="3">Easy</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="normal-song-multiplier">Normal Song Multiplier:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="normal-song-multiplier">1</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="normal-song-multiplier-dropdown-menu">
-            <li><a role="button">1</a></li>
-            <li><a role="button">2</a></li>
-            <li><a role="button">3</a></li>
-            <li><a role="button">4</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="normal-song-multiplier">
+          <option value="0" selected>1</option>
+          <option value="1">2</option>
+          <option value="2">3</option>
+          <option value="3">4</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="event-difficulty">Event Song Difficulty:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="event-difficulty">Expert</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="event-difficulty-dropdown-menu">
-            <li><a role="button">Expert</a></li>
-            <li><a role="button">Hard</a></li>
-            <li><a role="button">Normal</a></li>
-            <li><a role="button">Easy</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="event-difficulty">
+          <option value="0" selected>Expert</option>
+          <option value="1">Hard</option>
+          <option value="2">Normal</option>
+          <option value="3">Easy</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="event-song-multiplier">Event Song Multiplier:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="event-song-multiplier">4</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="event-song-multiplier-dropdown-menu">
-            <li><a role="button">1</a></li>
-            <li><a role="button">2</a></li>
-            <li><a role="button">3</a></li>
-            <li><a role="button">4</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="event-song-multiplier">
+          <option value="0">1</option>
+          <option value="1">2</option>
+          <option value="2">3</option>
+          <option value="3" selected>4</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="score">Score:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="score">S</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="score-dropdown-menu">
-            <li><a role="button">S</a></li>
-            <li><a role="button">A</a></li>
-            <li><a role="button">B</a></li>
-            <li><a role="button">C</a></li>
-            <li><a role="button">None</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="score">
+          <option value="0" selected>S</option>
+          <option value="1">A</option>
+          <option value="2">B</option>
+          <option value="3">C</option>
+          <option value="4">None</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="combo">Combo:</label>
       <div class="col-sm-10">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default" id="combo">A</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" id="combo-dropdown-menu">
-            <li><a role="button">S</a></li>
-            <li><a role="button">A</a></li>
-            <li><a role="button">B</a></li>
-            <li><a role="button">C</a></li>
-            <li><a role="button">None</a></li>
-          </ul>
-        </div>
+        <select class="form-control" id="combo">
+          <option value="0">S</option>
+          <option value="1" selected>A</option>
+          <option value="2">B</option>
+          <option value="3">C</option>
+          <option value="4">None</option>
+        </select>
       </div>
     </div>
     <hr>
