@@ -1,4 +1,4 @@
-var jpEventEndDateTime = moment("");
+var jpEventEndDateTime = moment("12/31/2016 03:00 PM GMT+0900");
 
 var $currentRank = $("#current-rank");
 var $currentExp = $("#current-exp");
